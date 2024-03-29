@@ -10,7 +10,7 @@ import "./App.css"
 function App() {
   return (
     <div className="App">
-        <Navbar />
+        {/* <Navbar /> */}
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/Login" element={<Login/>}/>
