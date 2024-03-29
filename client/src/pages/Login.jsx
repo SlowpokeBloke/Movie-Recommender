@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Validation from "../components/LoginValidation";
 import axios from 'axios';
 import "../App.css";
-import logo from "../logo.png";
+import logo from "../components/imgs/logo.png";
 
 const Login = () => {
     const [values, setValues] =  useState({

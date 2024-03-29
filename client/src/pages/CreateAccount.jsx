@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Validation from "../components/CreateAccountValidation";
 import axios from 'axios';
-import logo from "../logo.png";
+import logo from "../components/imgs/logo.png";
 
 
 const CreateAccount = () => {
