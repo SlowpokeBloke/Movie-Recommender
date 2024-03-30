@@ -1,8 +1,9 @@
 import React from "react"
+import { Link, NavLink } from 'react-router-dom';
 
 const UserAccount = () => {
     return (
-        <div>
+        <div name="profile-container">
             <h1>User Account</h1>
             <div id="profile">
                 <h2>Hello, [FETCH USER]!</h2>
@@ -11,7 +12,8 @@ const UserAccount = () => {
                 <div id="list">sample list</div>
             </div>
             <div id="recommender">
-                Give Me a ReelMatch! [(BUTTON)Take Our Quiz!]
+                Give Me a ReelMatch!
+                <Link to ="/Quiz"><button>Take Our Quiz!</button></Link>
             </div>
         </div>
     )

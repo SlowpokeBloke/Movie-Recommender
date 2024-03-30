@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import "./Navbar.css";
+import logo from "../components/imgs/logo.png";
 
 export const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false); // Correctly initialize menuOpen and setMenuOpen using array destructuring
 
     return (
         <nav>
-            <Link to="/" className='title'>Movie Recommender</Link>
+            <Link to="/" className='title'>
+                <div className="header">
+                    <img src={logo} alt="Reel Match Logo" className="logo"/>
+                    <h3>ReelMatch</h3>
+                </div>
+            </Link>
             <div className='menu' onClick={() => {
                 setMenuOpen(!menuOpen);
             }}>

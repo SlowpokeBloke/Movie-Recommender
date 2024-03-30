@@ -7,6 +7,14 @@ body {
   font-style: normal;
 }
 
+h1, h2, h3 {
+  color: #ffd970;
+  font-family: "PT Sans", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+
 /******************** HOME PAGE ********************/
 .Home h2, .Home h3, .Home h4, .Home h1 {
   color: #ffd970;
