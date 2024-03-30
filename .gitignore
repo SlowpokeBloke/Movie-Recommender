@@ -1,0 +1,11 @@
+
+backend/node_modules
+client/node_modules
+node_modules/
+node/
+build/
+client/build
+client/package-lock.json
+client/package.json
+backend/package.json
+backend/package-lock.json
