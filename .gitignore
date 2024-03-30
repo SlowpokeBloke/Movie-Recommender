@@ -1,3 +1,16 @@
+<<<<<<< HEAD
+
+backend/node_modules
+client/node_modules
+node_modules/
+node/
+build/
+client/build
+client/package-lock.json
+client/package.json
+backend/package.json
+backend/package-lock.json
+=======
 # Logs
 logs
 *.log
@@ -131,3 +144,4 @@ dist
 
 #kaggle dataset archive
 kaggle_dataset/
+>>>>>>> ffa5f2452c0aea7e85ec00c54a81f6aaae4aad22
