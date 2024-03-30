@@ -1,5 +1,225 @@
-.App {
-  background-color: #fefefe;
-  height: 100%;
-  width: 100%;
+body {
+  background-color: #1c1225; 
+  margin: 0; 
+  padding: 0; 
+  font-family: "PT Sans", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+/******************** HOME PAGE ********************/
+.Home h2, .Home h3, .Home h4, .Home h1 {
+  color: #ffd970;
+  font-family: "PT Sans", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.Home h3 {
+  padding-top: 10px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 55px;
+  height: auto;
+  padding-left: 10px;
+  padding-top: 10px;
+  margin-right: 10px;
+}
+
+.greeting {
+  float: left;
+  width: 35%;
+  padding-top: 50px;
+  padding-left: 65px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.new {
+  padding-top: 20px;
+}
+
+.returning {
+  padding-top: 20px;
+}
+
+.Home button {
+  background-color: #3E2750;
+  border: none;
+  padding: 10px 32px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 8px;
+  color: #5c5c9a;
+  transition-duration: 0.4s;
+  width: 250px;
+  font-size: 20px;
+  font-family: "PT Sans", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.Home button:hover {
+  background-color: #2A133F;
+  color: white;
+}
+
+/******************** SIGN UP PAGE ********************/
+.CreateAccount h2, .CreateAccount h3, .CreateAccount h4, .CreateAccount h1 , .CreateAccount h6 , .CreateAccount label{
+  color: #ffd970;
+  font-family: "PT Sans", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.CreateAccount h1 {
+  text-align: center;
+  padding-top: 50px;
+}
+
+.CreateAccount h6 {
+  text-align: center;
+  padding-top: 10px;
+}
+
+.CreateAccount input:focus {
+  border: 3px solid #2A133F;
+}
+
+.CreateAccount form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.signup {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    text-align: left;
+    padding-top: 5px;
+}
+
+.signup label {
+    font-weight: bold;
+    color: #ffd970;
+    margin-bottom: 5px;
+}
+
+.signup input {
+    width: 350px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: none;
+    resize: vertical;
+}
+
+.signup input:focus {
+    border: 3px solid #2A133F;
+}
+
+.CreateAccount button {
+  background-color: #3E2750;
+  border: none;
+  padding: 10px 32px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 8px;
+  color: #5c5c9a;
+  transition-duration: 0.4s;
+  width: 250px;
+  font-size: 20px;
+  font-family: "PT Sans", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.CreateAccount button:hover {
+  background-color: #2A133F;
+  color: white;
+}
+
+/******************** LOGIN IN PAGE ********************/
+.Login h2, .Login h3, .Login h4, .Login h1 , .Login h6 , .Login label{
+  color: #ffd970;
+  font-family: "PT Sans", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.Login h1 {
+  text-align: center;
+  padding-top: 50px;
+}
+
+.Login h6 {
+  text-align: center;
+  padding-top: 10px;
+}
+
+.Login input:focus {
+  border: 3px solid #2A133F;
+}
+
+.Login form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.log {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    text-align: left;
+    padding-top: 5px;
+}
+
+.log label {
+    font-weight: bold;
+    color: #ffd970;
+    margin-bottom: 5px;
+}
+
+.log input {
+    width: 350px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: none;
+    resize: vertical;
+}
+
+.log input:focus {
+    border: 3px solid #2A133F;
+}
+
+.Login button {
+  background-color: #3E2750;
+  border: none;
+  padding: 10px 32px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 8px;
+  color: #5c5c9a;
+  transition-duration: 0.4s;
+  width: 250px;
+  font-size: 20px;
+  font-family: "PT Sans", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.Login button:hover {
+  background-color: #2A133F;
+  color: white;
 }
