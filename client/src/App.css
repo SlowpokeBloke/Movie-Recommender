@@ -18,6 +18,7 @@ h1, h2, h3 {
   display: flex;
   background-color: #ffd970;
   padding: auto;
+  border-radius: 5px;
 }
 
 button {

@@ -1,0 +1,11 @@
+h2, h3 {
+    color: black;
+}
+
+.container {
+    flex-direction: row;
+}
+#recommender {
+    display: flex;
+    flex-direction: column;
+}
