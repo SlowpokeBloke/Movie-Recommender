@@ -1,23 +1,30 @@
 import express from "express";
-import mysql from "mysql";
+import mysql from "mysql2";
 import cors from "cors";
-<<<<<<< HEAD
-=======
+import { createConnection } from "mysql2/promise";
+import bcrypt from "bcrypt";
 
->>>>>>> ffa5f2452c0aea7e85ec00c54a81f6aaae4aad22
 const app = express();
+
+let promiseDb;
+    createConnection({
+        host: "localhost",
+        user: "root",
+        password: "lele123!",
+        database: "movie_recommender"
+    }).then(db => {
+        promiseDb = db;
+        console.log("Promise-based database connection established.");
+    }).catch(err => {
+        console.error("Error establishing promise-based database connection:", err);
+    });
 
 const db = mysql.createConnection({
     host: "localhost", 
-<<<<<<< HEAD
     user: "root",
     password: "lele123!",
-=======
-    user: "mcoca",
-    password: "Bingo123",
->>>>>>> ffa5f2452c0aea7e85ec00c54a81f6aaae4aad22
     database: "movie_recommender"
-});
+  });
 
 db.connect((err) => {
     if (err) {
@@ -26,14 +33,6 @@ db.connect((err) => {
     }
     console.log("Connected to database!");
 });
-
-<<<<<<< HEAD
-=======
-//basic db calls to view db in backend app
-//db.query("SHOW TABLES;");
-
-//backend app display
->>>>>>> ffa5f2452c0aea7e85ec00c54a81f6aaae4aad22
 app.use(express.json());
 app.use(cors())
 
@@ -49,6 +48,64 @@ app.get("/movie", (req,res)=>{
     })
 
 })
+app.post('/createAccount', (req,res) => {
+    const { full_name, age, email, password } = req.body;
+    bcrypt.hash(password, 10, (err, hash) => { // Hash the password
+        if (err) {
+            console.error("Error hashing password:", err);
+            return res.status(500).json("Error hashing password");
+        }
+        const sql = "INSERT INTO `person` (`full_name`, `age`, `email`, `password`) VALUES (?)";
+        const values = [
+            full_name,
+            parseInt(age), 
+            email,
+            hash // Store hashed password in the database
+        ];
+        db.query(sql, [values], (err, data) =>{
+            if (err){
+                console.error("Error inserting data into database:", err);
+                return res.status(500).json("Error inserting data into database");
+            }
+            console.log("Data inserted into database successfully");
+            return res.json(data);
+        });
+    });
+});
+
+app.post('/login', (req,res) => {
+    const { email, password } = req.body;
+    const sql = "SELECT user_id, email, password FROM person WHERE email = ?";
+    db.query(sql, [email], (err, data) =>{
+        if (err){
+            console.error("Error executing query:", err);
+            return res.status(500).json("Error executing query");
+        }
+        if (data.length > 0){
+            const hashedPassword = data[0].password;
+            console.log("Retrieved hashed password:", hashedPassword);
+            console.log("Input password:", password);
+            bcrypt.compare(password.toString(), hashedPassword, (err, result) => { // Ensure password is a string
+                if (err) {
+                    console.error("Error comparing passwords:", err);
+                    return res.status(500).json("Error comparing passwords");
+                }
+                console.log("Comparison result:", result);
+                if (result) {
+                    const user_id = data[0].user_id; // Get the user_id from the data
+                    return res.json({ status: "Success", user_id: user_id }); // Include user_id in the response
+                } else {
+                    return res.json({ status: "Fail" });
+                }
+                
+            });
+        } else {
+            return res.json("Fail");
+        }
+    });
+});
+
+
 app.get("/movie_table", (req, res) => {
     console.log("Handling /movie request");
     const q = "SHOW TABLES;";
@@ -88,19 +145,39 @@ app.get("/genre", (req, res) => {
     });
 });
 
-app.post("/genre", (req, res) => {
-    console.log("Handling /movie request");
-    const q = "INSERT INTO genre (`genre_id`, `genre_name`) VALUES(?);";
-    const values = [12, 'Thriller']
-    db.query(q,[values],(err,data)=>{
-        if (err) {
-            console.error("Database query error:", err);
-            return res.json(err);
-        }
-        console.log("Database query success:", data);
-        return res.json(data);
-    })
-});
+app.post("/submitQuiz", async (req,res)=>{
+    if(!promiseDb){
+        console.log("Not connected to promiseDb");
+    }
+    console.log("Submitting quiz information");
+  try{ 
+        //not wrapping it 
+        const{user_id, nightType,releaseDate,genreType, actorType, ratingChosen} = req.body;
+        const values = [user_id, releaseDate,nightType, ratingChosen];
+
+        const responseQuery = "INSERT INTO responses (`user_id`, `release_date`, `movie_night`, `ratings`) VALUES(?, ?, ?, ?);"; 
+        const[response] = await promiseDb.query(responseQuery,values);
+        // response id created after response query inserted
+        const response_id = response.insertId;
+
+        // waits until all insertions are done 
+        await Promise.all(genreType.map( async (genre_id) => {
+            const responseGenreQuery = 'INSERT INTO response_genre (`response_id`, `genre_id`) VALUES(?, ?);';
+            await promiseDb.query(responseGenreQuery, [response_id, genre_id]);
+        }));
+
+        await Promise.all(actorType.map(async (actor_id) =>{
+            const responseActorQuery = 'INSERT INTO response_actor (`response_id`, `actor_id`) VALUES (?, ?); ';
+            await promiseDb.query(responseActorQuery, [response_id, actor_id]);
+
+        }));
+    }
+    catch (err) {
+        console.error("Response query error:", err);
+        return res.json(err);
+    }
+    });
+
 app.get("/movie_db", (req,res)=>{
     const query = "SHOW TABLES;";
     db.query(query,(err, data)=>{

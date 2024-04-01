@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-// import axios from axios;
+import axios from 'axios';
 import "./Quiz.css";
 import "../components/UseDropDown"
 import down from './down.png';
 import check from './check.png';
 import film1 from './film1.png';
 import useDropDown from "../components/UseDropDown";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 const Quiz = () => {
     const [night_type, setNightType] = useState({
             Date_night: false,
@@ -30,7 +30,6 @@ const Quiz = () => {
         setNightType(newState);
         
     };
-    const [formData, setFormData] = useState({});
     // navigation
     const navigate = useNavigate();
    
@@ -43,8 +42,9 @@ const Quiz = () => {
      
      // selected value in specific drop down list
      const handleItemSelect = (dropdownList, value) => dropdownList.selectList(value);
-    // fetching data from genre
+    // fetching data from genre and actors
     const [genres, setGenres] = useState([]);
+    const [actors, setActors] = useState([]);
     useEffect(()=>{
         const getGenre = async ()=>{
         try{
@@ -59,7 +59,23 @@ const Quiz = () => {
             console.error("Couldn't fetch genre: ", error);
         }
         };
+        const getActor = async ()=>{
+            const res= await fetch('http://localhost:8800/actor');
+        try{
+            if(!res.ok){
+                throw new Error('Network error')
+            }
+            const getData= await res.json();
+            setActors(getData);
+            console.log(getData);
+        }catch(error){
+            console.error("Couldn't fetch actor: ", error);
+        }
+        };
+
+        
         getGenre();
+        getActor();
     },[]);
 
     
@@ -76,26 +92,59 @@ const Quiz = () => {
             }
         });
     };
-    // handlingSubmitting form
-    const handleSubmit = (event) =>{
-        event.preventDefault();
 
-        const dataToSubmit ={
-            ...formData,
-            nightType: night_type,
+    // selected actors which holds the array of values
+    const [selectedActors, setSelectedActors] = useState([]);
+    // multiple selected values 
+    const handleActorSelect = (actor_id) =>{
+        setSelectedActors((currSelectedActors) => {
+            if(currSelectedActors.includes(actor_id)){
+                {/* removes actor from selection once selected */}         
+                return currSelectedActors.filter(id => id !== actor_id);
+            }else {
+                return [...currSelectedActors, actor_id];
+            }
+        });
+    };
+    // details for form
+    const selectedNightType = Object.keys(night_type).filter(key => night_type[key]);    
+    const[formSubmitted, setFormSubmitted] = useState(false);
+    //contains user_id
+    const{ user_id } = useParams();
+    //submitting form
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        e.stopPropagation(); 
+        
+        //debugging
+        console.log("handleSubmit called");
+        if(formSubmitted) {
+            console.log("Form already submitted. Preventing multiple submissions.");
+            return;
+        }
+        console.log("Proceeding with form submission...");
+        //flag set to prevent duplicates
+        setFormSubmitted(true); 
+        const dataToSubmit = {
+            user_id: user_id,
+            nightType: selectedNightType[0],
             genreType: selectedGenres,
+            actorType: selectedActors,
             releaseDate: releaseDateDropDown.selectedValue,
-            ratingChosen: ratingDropDown.selectedValue
-            
+            ratingChosen: ratingDropDown.selectedValue,
         };
-        console.log("Data to submit");
-        console.log(dataToSubmit.nightType);
-        console.log(dataToSubmit.genreType);
-        console.log(dataToSubmit.releaseDate);
-        console.log(dataToSubmit.ratingChosen);
-      { /*  navigate('/UserAccount');*/}
-
-    }
+    
+        console.log("Data to submit:", dataToSubmit);
+    
+        try {
+            const response = await axios.post('http://localhost:8800/submitQuiz', dataToSubmit);
+            console.log('Success:', response.data);
+            navigate("/Home");
+        } catch (error) {
+            console.error('Error Message:', error);
+        }
+    };
+    
     return (
         <div className="container-wrapper">
             <form onSubmit ={handleSubmit}>
@@ -106,14 +155,15 @@ const Quiz = () => {
                 
                 <div className="title">Questionnaire</div> 
                 <div className="night-container"><span className ="question">What type of movie night are you having?</span>
-                    <p className="box"><input onChange={handleCheckbox} type='checkbox' name="night_type" value="Date_night" checked = {night_type.Date_night}></input><span></span>Date night</p>
+                    <p className="box"><input onChange={handleCheckbox} type='checkbox' name="night_type" value="Date_night" checked = {night_type.Date_night}></input>Date night</p>
                     <p className ="box"><input onChange={handleCheckbox} type='checkbox' name="night_type" value="Solo_night" checked = {night_type.Solo_night}></input>Solo night</p>
                     <p className ="box"><input onChange={handleCheckbox} type='checkbox' name="night_type" value="Friends_night" checked = {night_type.Friends_night}></input><span className ="friend">Friends night</span></p>
                     <p className ="box"><input onChange={handleCheckbox} type='checkbox' name="night_type" value="Family_night" checked = {night_type.Family_night}></input><span className= "family">Family night</span></p>
                 </div>
-                
+    
                 <div className="genre-container"><span className="question">What genre are you interested in?</span>
-                    <button className="select-genre-button" onClick={genreDropDown.toggleList}>Select Genres
+                    {/*Recognize that created buttons are of a button type and not confused with the submission button*/}                
+                    <button type="button" className="select-genre-button" onClick={genreDropDown.toggleList}>Select Genres
                         <img className="down-pic" src={down} alt="Down"></img>
                     </button>
                     {/*Mapping genres ids to names */}
@@ -134,13 +184,27 @@ const Quiz = () => {
                     
                 </div>
                 <div className="actors-container"><span className="question">What actors are you interested in?</span>
-                    <button className="select-actor-name">Select Actors
+                    <button type="button" className="select-actor-name" onClick={actorDropDown.toggleList}>Select Actors
                         <img className="down-pic" src={down} alt="Down"></img>
                     </button>
+                    <ul className="list-items" style={{ display: actorDropDown.isOpen ? 'block' : 'none' }}>
+                        {   
+                            actors.map( (getactors)=>(
+                                <li  key= {getactors.actor_id} className = "item" onClick={() => handleActorSelect(getactors.actor_id, getactors.actor_name)}>
+                                     <span className = "checkboxes">
+                                        {/*Ensuring the checkmark is small and only shows checks for selected actors*/}
+                                        <img className={`check-pic ${selectedActors.includes(getactors.actor_id) ?'' : 'check-pic-hidden'}`} src ={check}  alt="Check" width="10" height="10"></img>
+                                    </span>
+                                    <span className= "item-text">{getactors.actor_name}</span>
+                                </li>
+                            )
+                            )
+                        }
+                    </ul>  
                 </div>
                 {/*Movie preference for release date*/}
                 <div className="date-container"><span className="question">Do you have a preference for the release date of the movie?</span>
-                    <button className="select-release-date-button" onClick={releaseDateDropDown.toggleList} >Select Release Date
+                    <button type="button" className="select-release-date-button" onClick={releaseDateDropDown.toggleList} >Select Release Date
                         <img className="down-pic" src={down} alt="Down"></img>
                     </button>
                         { /* only shows list if the button is clicked */}
@@ -174,7 +238,7 @@ const Quiz = () => {
                     </ul>
                 </div>
                 <div className="rating-container"><span className="question">Do you have a preferred movie rating?</span>
-                    <button className="select-rating-button" onClick={ratingDropDown.toggleList}>Select Rating
+                    <button type="button" className="select-rating-button" onClick={ratingDropDown.toggleList}>Select Rating
                         <img className="down-pic" src={down} alt="Down"></img>
                     </button>
                     <ul className="list-items" style={{ display: ratingDropDown.isOpen ? 'block' : 'none' }}>
@@ -199,8 +263,7 @@ const Quiz = () => {
                         </li>
                     </ul>
                 </div>
-                <button className="submit-button">Submit</button>
-                
+               <button className="submit-button" onClick={(e) => handleSubmit(e)}>Submit</button>
             </div>
            
             </div>
@@ -208,6 +271,4 @@ const Quiz = () => {
         </div>
     );
     }
-
-
 export default Quiz

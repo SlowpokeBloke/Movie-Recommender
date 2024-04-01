@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Validation from "../components/LoginValidation";
 import axios from 'axios';
@@ -26,10 +25,16 @@ const Login = () => {
         const err = Validation(values);
         setErrors(err);
         if (err.email === "" && err.password === "") {
+            //debugging
+            //console.log("User ID: ", user_id);
             axios.post('http://localhost:8800/login', values)
                 .then(res => {
-                    if (res.data === "Success"){
-                        navigate("/Quiz");
+                    console.log("Login API Response:", res); 
+                    if (res.data.status === "Success"){
+                        // shows user_id in navigation as a token ot pass user_id 
+                        const user_id = res.data.user_id;
+                        navigate(`/Quiz/${user_id}`);
+
                     }
                     else {
                         alert("Login failed");
