@@ -17,6 +17,29 @@ h1, h2, h3 {
 .container {
   display: flex;
   background-color: #ffd970;
+  padding: auto;
+}
+
+button {
+  background-color: #3E2750;
+  border: none;
+  padding: 10px 32px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 8px;
+  color: #5c5c9a;
+  transition-duration: 0.4s;
+  width: 250px;
+  font-size: 20px;
+  font-family: "PT Sans", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  margin:5px;
+}
+
+button:hover {
+  background-color: #2A133F;
+  color: white;
 }
 
 /******************** HOME PAGE ********************/

@@ -6,10 +6,10 @@ const Home = () => {
     return (
         <div className="Home">
             
-            <div className="header">
+            {/* <div className="header">
                 <img src={logo} alt="Reel Match Logo" className="logo"/> 
                 <h3>ReelMatch</h3>
-            </div>
+            </div> */}
     
             <div className="greeting">
                 <h1>Find your Reel movie match at ReelMatch in just a few clicks.</h1>
