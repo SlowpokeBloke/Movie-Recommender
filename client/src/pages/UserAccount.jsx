@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 const UserAccount = () => {
     return (
-        <div name="profile-container">
+        <div name="profile-container" class="container">
             <h1>User Account</h1>
             <div id="profile">
                 <h2>Hello, [FETCH USER]!</h2>

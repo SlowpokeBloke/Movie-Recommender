@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import "./Quiz.css";
 import "../components/UseDropDown"
-import down from './down.png';
-import check from './check.png';
-import film1 from './film1.png';
+import down from '../components/imgs/down.png';
+import check from '../components/imgs/check.png';
+import film1 from '../components/imgs/film1.png';
 import useDropDown from "../components/UseDropDown";
 import { useNavigate, useParams } from "react-router-dom";
 const Quiz = () => {
