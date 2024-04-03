@@ -8,9 +8,9 @@ const app = express();
 
 let promiseDb;
     createConnection({
-        host: "localhost",
+        host: "localhost", 
         user: "root",
-        password: "lele123!",
+        password: "Bella8903_",
         database: "movie_recommender"
     }).then(db => {
         promiseDb = db;
@@ -22,7 +22,7 @@ let promiseDb;
 const db = mysql.createConnection({
     host: "localhost", 
     user: "root",
-    password: "lele123!",
+    password: "Bella8903_",
     database: "movie_recommender"
   });
 
@@ -31,7 +31,7 @@ db.connect((err) => {
         console.error("Error connecting to MySQL database:", err);
         return;
     }
-    console.log("Connected to database!");
+    console.log("Connected to MySQL database!");
 });
 app.use(express.json());
 app.use(cors())
