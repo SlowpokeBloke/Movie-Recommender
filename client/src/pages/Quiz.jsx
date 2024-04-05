@@ -5,6 +5,9 @@ import "../components/UseDropDown"
 import down from './down.png';
 import check from './check.png';
 import film1 from './film1.png';
+import film from './film.png';
+import videography from './videography.png';
+import cinema from './cinema-clapboard.png'
 import useDropDown from "../components/UseDropDown";
 import { useNavigate, useParams } from "react-router-dom";
 const Quiz = () => {
@@ -148,9 +151,60 @@ const Quiz = () => {
     return (
         <div className="container-wrapper">
             <form onSubmit ={handleSubmit}>
-            <div className= "film-wrapper">
+            <div className="pics-above-container">
+                <img className="icons-above" src={film} alt="film"></img>
+                <img className="icons-above2" src={videography} alt="videog"></img>
+                <img className="icons-above" src={cinema} alt="cinema"></img>
+            </div>
+            <div className="parent-container-film">
+            <div className= "film-wrapper-left">
                <img className="film-wrap" src={film1} alt="film1"></img>
-
+            </div>
+            <div className= "film-wrapper-left2">
+                <img className="film-wrap" src={film1} alt="film1"></img>
+            </div>
+            <div className= "film-wrapper-left3">
+                <img className="film-wrap" src={film1} alt="film1"></img>
+            </div>
+            <div className= "film-wrapper-left4">
+                 <img className="film-wrap" src={film1} alt="film1"></img>
+            </div>
+            <div className= "film-wrapper-left5">
+                 <img className="film-wrap" src={film1} alt="film1"></img>
+            </div>
+            <div className= "film-wrapper-left6">
+                 <img className="film-wrap" src={film1} alt="film1"></img>
+            </div>
+            <div className= "film-wrapper-left7">
+                 <img className="film-wrap" src={film1} alt="film1"></img>
+            </div>
+            <div className= "film-wrapper-left8">
+                 <img className="film-wrap" src={film1} alt="film1"></img>
+            </div>
+            <div className= "film-wrapper-right">
+                <img className="film-wrap" src={film1} alt="film2"></img>
+            </div>
+            <div className= "film-wrapper-right2">
+                <img className="film-wrap" src={film1} alt="film2"></img>
+            </div>
+            <div className= "film-wrapper-right3">
+                <img className="film-wrap" src={film1} alt="film2"></img>
+            </div>
+            <div className= "film-wrapper-right4">
+                 <img className="film-wrap" src={film1} alt="film2"></img>
+            </div>
+            <div className= "film-wrapper-right5">
+                 <img className="film-wrap" src={film1} alt="film2"></img>
+            </div>
+            <div className= "film-wrapper-right6">
+                 <img className="film-wrap" src={film1} alt="film2"></img>
+            </div>
+            <div className= "film-wrapper-right7">
+                 <img className="film-wrap" src={film1} alt="film2"></img>
+            </div>
+            <div className= "film-wrapper-right8">
+                 <img className="film-wrap" src={film1} alt="film2"></img>
+            </div>
             <div className="container">
                 
                 <div className="title">Questionnaire</div> 
@@ -264,8 +318,8 @@ const Quiz = () => {
                     </ul>
                 </div>
                <button className="submit-button" onClick={(e) => handleSubmit(e)}>Submit</button>
-            </div>
-           
+            
+               </div>
             </div>
             </form>
         </div>
