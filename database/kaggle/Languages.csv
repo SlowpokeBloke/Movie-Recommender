@@ -1,0 +1,134 @@
+language_id,abbrev,full_name
+1,en,English
+2,fr,Français
+3,es,Español
+4,de,Deutsch
+5,ru,Pусский
+6,la,Latin
+7,nl,Nederlands
+8,cn,广州话 / 廣州話
+9,zh,普通话
+10,hu,Magyar
+11,sq,shqip
+12,it,Italiano
+13,ko,한국어/조선말
+14,fa,فارسی
+15,da,Dansk
+16,gd,Gaelic
+17,ja,日本語
+18,ar,العربية
+19,hr,Hrvatski
+20,bs,Bosanski
+21,mn,Mongolian
+22,ro,Română
+23,id,Bahasa indonesia
+24,ms,Bahasa melayu
+25,mk,Macedonian
+26,sv,svenska
+27,he,עִבְרִית
+28,kw,Cornish
+29,cs,Český
+30,nv,Navajo
+31,mi,Maori
+32,tl,Tagalog
+33,pl,Polski
+34,ga,Gaeilge
+35,no,Norsk
+36,sk,Slovenčina
+37,vi,Tiếng Việt
+38,yi,Yiddish
+39,pt,Português
+40,hi,हिन्दी
+41,ca,Català
+42,is,Íslenska
+43,af,Afrikaans
+44,sr,Srpski
+45,bn,বাংলা
+46,wo,Wolof
+47,cy,Cymraeg
+48,th,ภาษาไทย
+49,lv,Latviešu
+50,sw,Kiswahili
+51,bg,български език
+52,el,ελληνικά
+53,ne,Nepali
+54,tr,Türkçe
+55,km,Khmer Central
+56,fi,suomi
+57,eo,Esperanto
+58,uk,Український
+59,iu,Inuktitut
+60,ka,ქართული
+61,sh,Serbo-Croatian
+62,bo,Tibetan
+63,nb,Bokmål
+64,ty,Tahitian
+65,xx,No Language
+66,si,Sinhalese
+67,as,Assamese
+68,gn,Guarani
+69,eu,euskera
+70,az,Azərbaycan
+71,mt,Malti
+72,ur,اردو
+73,zu,isiZulu
+74,lo,Lo-Toga
+75,xh,xhosa
+76,bm,Bamanankan
+77,cr,Cree
+78,ps,پښتو
+79,so,Somali
+80,ku,Kurdish
+81,hy,Armenian
+82,oc,Occitan
+83,pa,ਪੰਜਾਬੀ
+84,to,?????
+85,ce,Chechen
+86,qu,Quechua
+87,be,беларуская мова
+88,am,Amharic
+89,tg,Tajik
+90,tt,Tatar
+91,se,Northern Sami
+92,ml,Malayalam
+93,ta,தமிழ்
+94,co,Corsican
+95,gl,Galego
+96,dz,Arabic (Algeria)
+97,rw,Kinyarwanda
+98,ht,Haitian
+99,kk,қазақ
+100,ln,Lingala
+101,my,mya
+102,et,Eesti
+103,sa,Arabic (Saudi Arabia)
+104,(empty),(empty)
+105,fy,Western Frisian
+106,tk,Turkmen
+107,sl,Slovenščina
+108,te,తెలుగు
+109,ny,Chichewa
+110,st,Sotho
+111,sc,Sardinian
+112,gu,Gujarati
+113,ff,Fulfulde
+114,mr,Marathi
+115,ug,Uighur
+116,ay,Aymara
+117,ky,Kirghiz
+118,jv,Javanese
+119,br,Breton
+120,sg,Chinese (Singapore)
+121,ab,Abkhazian
+122,kn,Kannada
+123,uz,ozbek
+124,sm,Samoan
+125,ki,Kikuyu
+126,lb,Luxembourgish
+127,tn,Arabic (Tunisia)
+128,fo,Faroese
+129,sn,Shona
+130,bi,Bislama
+131,ha,Hausa
+132,ig,Igbo
+133,mh,Marshallese
