@@ -21,7 +21,7 @@ export const Navbar = () => {
                     <NavLink to="/">Home</NavLink>
                 </li>
                 <li>
-                    <NavLink to="/Quiz">Take Quiz</NavLink>
+                    <NavLink to="/Quiz">Quiz</NavLink>
                 </li>
                 <li>
                     <NavLink to="/UserAccount">Account</NavLink>
