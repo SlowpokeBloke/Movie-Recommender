@@ -10,7 +10,7 @@ let promiseDb;
     createConnection({
         host: "localhost", 
         user: "root",
-        password: "Bella8903_",
+        password: "lele123!",
         database: "movie_recommender"
     }).then(db => {
         promiseDb = db;
@@ -22,7 +22,7 @@ let promiseDb;
 const db = mysql.createConnection({
     host: "localhost", 
     user: "root",
-    password: "Bella8903_",
+    password: "lele123!",
     database: "movie_recommender"
   });
 
@@ -150,6 +150,8 @@ app.post("/submitQuiz", async (req,res)=>{
         console.log("Not connected to promiseDb");
     }
     console.log("Submitting quiz information");
+    console.log("Received quiz submission:", req.body);
+    
   try{ 
         //not wrapping it 
         const{user_id, nightType,releaseDate,genreType, actorType, ratingChosen} = req.body;
@@ -171,10 +173,18 @@ app.post("/submitQuiz", async (req,res)=>{
             await promiseDb.query(responseActorQuery, [response_id, actor_id]);
 
         }));
+
+         // insertions have to finish
+         await Promise.all([...genreType, ...actorType]);
+         // a single response
+         res.json({ status: "Success", message: "Quiz processed successfully.", user_id: user_id });
     }
     catch (err) {
         console.error("Response query error:", err);
-        return res.json(err);
+        // no response has been sent yet
+        if (!res.headersSent) {
+            res.status(500).json({ status: "Error", message: "Failed to process quiz submission." });
+        }
     }
     });
 

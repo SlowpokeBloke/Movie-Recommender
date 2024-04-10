@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import "./Quiz.css";
 import "../components/UseDropDown"
-import down from './down.png';
-import check from './check.png';
-import film1 from './film1.png';
-import film from './film.png';
-import videography from './videography.png';
-import cinema from './cinema-clapboard.png'
+import down from '../icon_pics/down.png';
+import check from '../icon_pics/check.png';
+import film1 from '../icon_pics/film1.png';
+import film from '../icon_pics/film.png';
+import videography from '../icon_pics/videography.png';
+import cinema from '../icon_pics/cinema-clapboard.png'
 import useDropDown from "../components/UseDropDown";
 import { useNavigate, useParams } from "react-router-dom";
 const Quiz = () => {
@@ -109,25 +109,29 @@ const Quiz = () => {
             }
         });
     };
+   
+      
     // details for form
     const selectedNightType = Object.keys(night_type).filter(key => night_type[key]);    
     const[formSubmitted, setFormSubmitted] = useState(false);
     //contains user_id
+    //debugging
     const{ user_id } = useParams();
+    console.log(useParams());
+    console.log("user_id from useParams:", user_id);
+     
+
     //submitting form
     const handleSubmit = async (e) => {
         e.preventDefault();
-        e.stopPropagation(); 
-        
-        //debugging
-        console.log("handleSubmit called");
-        if(formSubmitted) {
-            console.log("Form already submitted. Preventing multiple submissions.");
-            return;
-        }
+       //debugging
+       console.log("handleSubmit called");
+       if(formSubmitted) {
+           console.log("Form already submitted. Preventing multiple submissions.");
+           return;
+       }
         console.log("Proceeding with form submission...");
-        //flag set to prevent duplicates
-        setFormSubmitted(true); 
+    
         const dataToSubmit = {
             user_id: user_id,
             nightType: selectedNightType[0],
@@ -137,16 +141,29 @@ const Quiz = () => {
             ratingChosen: ratingDropDown.selectedValue,
         };
     
-        console.log("Data to submit:", dataToSubmit);
-    
+        console.log("Submitting the following data:", dataToSubmit);
+        setFormSubmitted(true);
+        
+        // true navigation
         try {
+            console.log("Submitting quiz for user_id:", user_id);
             const response = await axios.post('http://localhost:8800/submitQuiz', dataToSubmit);
-            console.log('Success:', response.data);
-            navigate("/Home");
+            console.log("Quiz API Response:", response.data);
+            if (response.data.status === "Success") {
+                 // shows user_id in navigation as a token ot pass user_id 
+                 console.log(`Navigating to Selection with user_id: ${user_id}`);
+                 navigate(`/Selection/${user_id}`);
+    
+            } else {
+                console.error("Submission failed with status:", response.data.status);
+                setFormSubmitted(false); 
+            }
         } catch (error) {
-            console.error('Error Message:', error);
+            console.error('Error submitting form:', error);
+            setFormSubmitted(false);
         }
     };
+           
     
     return (
         <div className="container-wrapper">
@@ -317,8 +334,7 @@ const Quiz = () => {
                         </li>
                     </ul>
                 </div>
-               <button className="submit-button" onClick={(e) => handleSubmit(e)}>Submit</button>
-            
+               <button className="submit-button" onClick={handleSubmit}>Submit</button>
                </div>
             </div>
             </form>
