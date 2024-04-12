@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import "./Quiz.css";
 import "../components/UseDropDown"
-import down from './down.png';
-import check from './check.png';
-import film1 from './film1.png';
+import down from '../icon_pics/down.png';
+import check from '../icon_pics/check.png';
+import film1 from '../icon_pics/film1.png';
+import film from '../icon_pics/film.png';
+import videography from '../icon_pics/videography.png';
+import cinema from '../icon_pics/cinema-clapboard.png'
 import useDropDown from "../components/UseDropDown";
 import { useNavigate, useParams } from "react-router-dom";
 const Quiz = () => {
@@ -106,25 +109,29 @@ const Quiz = () => {
             }
         });
     };
+   
+      
     // details for form
     const selectedNightType = Object.keys(night_type).filter(key => night_type[key]);    
     const[formSubmitted, setFormSubmitted] = useState(false);
     //contains user_id
+    //debugging
     const{ user_id } = useParams();
+    console.log(useParams());
+    console.log("user_id from useParams:", user_id);
+     
+
     //submitting form
     const handleSubmit = async (e) => {
         e.preventDefault();
-        e.stopPropagation(); 
-        
-        //debugging
-        console.log("handleSubmit called");
-        if(formSubmitted) {
-            console.log("Form already submitted. Preventing multiple submissions.");
-            return;
-        }
+       //debugging
+       console.log("handleSubmit called");
+       if(formSubmitted) {
+           console.log("Form already submitted. Preventing multiple submissions.");
+           return;
+       }
         console.log("Proceeding with form submission...");
-        //flag set to prevent duplicates
-        setFormSubmitted(true); 
+    
         const dataToSubmit = {
             user_id: user_id,
             nightType: selectedNightType[0],
@@ -134,23 +141,87 @@ const Quiz = () => {
             ratingChosen: ratingDropDown.selectedValue,
         };
     
-        console.log("Data to submit:", dataToSubmit);
-    
+        console.log("Submitting the following data:", dataToSubmit);
+        setFormSubmitted(true);
+        
+        // true navigation
         try {
+            console.log("Submitting quiz for user_id:", user_id);
             const response = await axios.post('http://localhost:8800/submitQuiz', dataToSubmit);
-            console.log('Success:', response.data);
-            navigate("/Home");
+            console.log("Quiz API Response:", response.data);
+            if (response.data.status === "Success") {
+                 // shows user_id in navigation as a token ot pass user_id 
+                 console.log(`Navigating to Selection with user_id: ${user_id}`);
+                 navigate(`/Selection/${user_id}`);
+    
+            } else {
+                console.error("Submission failed with status:", response.data.status);
+                setFormSubmitted(false); 
+            }
         } catch (error) {
-            console.error('Error Message:', error);
+            console.error('Error submitting form:', error);
+            setFormSubmitted(false);
         }
     };
+           
     
     return (
         <div className="container-wrapper">
             <form onSubmit ={handleSubmit}>
-            <div className= "film-wrapper">
+            <div className="pics-above-container">
+                <img className="icons-above" src={film} alt="film"></img>
+                <img className="icons-above2" src={videography} alt="videog"></img>
+                <img className="icons-above" src={cinema} alt="cinema"></img>
+            </div>
+            <div className="parent-container-film">
+            <div className= "film-wrapper-left">
                <img className="film-wrap" src={film1} alt="film1"></img>
-
+            </div>
+            <div className= "film-wrapper-left2">
+                <img className="film-wrap" src={film1} alt="film1"></img>
+            </div>
+            <div className= "film-wrapper-left3">
+                <img className="film-wrap" src={film1} alt="film1"></img>
+            </div>
+            <div className= "film-wrapper-left4">
+                 <img className="film-wrap" src={film1} alt="film1"></img>
+            </div>
+            <div className= "film-wrapper-left5">
+                 <img className="film-wrap" src={film1} alt="film1"></img>
+            </div>
+            <div className= "film-wrapper-left6">
+                 <img className="film-wrap" src={film1} alt="film1"></img>
+            </div>
+            <div className= "film-wrapper-left7">
+                 <img className="film-wrap" src={film1} alt="film1"></img>
+            </div>
+            <div className= "film-wrapper-left8">
+                 <img className="film-wrap" src={film1} alt="film1"></img>
+            </div>
+            <div className= "film-wrapper-right">
+                <img className="film-wrap" src={film1} alt="film2"></img>
+            </div>
+            <div className= "film-wrapper-right2">
+                <img className="film-wrap" src={film1} alt="film2"></img>
+            </div>
+            <div className= "film-wrapper-right3">
+                <img className="film-wrap" src={film1} alt="film2"></img>
+            </div>
+            <div className= "film-wrapper-right4">
+                 <img className="film-wrap" src={film1} alt="film2"></img>
+            </div>
+            <div className= "film-wrapper-right5">
+                 <img className="film-wrap" src={film1} alt="film2"></img>
+            </div>
+            <div className= "film-wrapper-right6">
+                 <img className="film-wrap" src={film1} alt="film2"></img>
+            </div>
+            <div className= "film-wrapper-right7">
+                 <img className="film-wrap" src={film1} alt="film2"></img>
+            </div>
+            <div className= "film-wrapper-right8">
+                 <img className="film-wrap" src={film1} alt="film2"></img>
+            </div>
             <div className="container">
                 
                 <div className="title">Questionnaire</div> 
@@ -263,9 +334,8 @@ const Quiz = () => {
                         </li>
                     </ul>
                 </div>
-               <button className="submit-button" onClick={(e) => handleSubmit(e)}>Submit</button>
-            </div>
-           
+               <button className="submit-button" onClick={handleSubmit}>Submit</button>
+               </div>
             </div>
             </form>
         </div>
