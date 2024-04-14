@@ -8,9 +8,9 @@ const app = express();
 
 let promiseDb;
     createConnection({
-        host: "localhost", 
+        host: "movie-recomm.cracaa44anex.us-east-2.rds.amazonaws.com",
         user: "root",
-        password: "lele123!",
+        password: "Lele123!",
         database: "movie_recommender"
     }).then(db => {
         promiseDb = db;
@@ -20,11 +20,11 @@ let promiseDb;
     });
 
 const db = mysql.createConnection({
-    host: "localhost", 
+    host: "movie-recomm.cracaa44anex.us-east-2.rds.amazonaws.com", 
     user: "root",
-    password: "lele123!",
+    password: "Lele123!",
     database: "movie_recommender"
-  });
+});
 
 db.connect((err) => {
     if (err) {
@@ -55,12 +55,12 @@ app.post('/createAccount', (req,res) => {
             console.error("Error hashing password:", err);
             return res.status(500).json("Error hashing password");
         }
-        const sql = "INSERT INTO `person` (`full_name`, `age`, `email`, `password`) VALUES (?)";
+        const sql = "INSERT INTO movie_recommender.person (`full_name`, `age`, `email`, `password`) VALUES (?)";
         const values = [
             full_name,
             parseInt(age), 
             email,
-            hash // Store hashed password in the database
+            hash 
         ];
         db.query(sql, [values], (err, data) =>{
             if (err){
@@ -75,7 +75,7 @@ app.post('/createAccount', (req,res) => {
 
 app.post('/login', (req,res) => {
     const { email, password } = req.body;
-    const sql = "SELECT user_id, email, password FROM person WHERE email = ?";
+    const sql = "SELECT user_id, email, password FROM movie_recommender.person WHERE email = ?";
     db.query(sql, [email], (err, data) =>{
         if (err){
             console.error("Error executing query:", err);
@@ -105,7 +105,6 @@ app.post('/login', (req,res) => {
     });
 });
 
-
 app.get("/movie_table", (req, res) => {
     console.log("Handling /movie request");
     const q = "SHOW TABLES;";
@@ -121,7 +120,7 @@ app.get("/movie_table", (req, res) => {
 
 app.get("/actor", (req, res) => {
     console.log("Handling /movie request");
-    const q = "SELECT * FROM actor;";
+    const q = "SELECT * FROM actor LIMIT 600;";
     db.query(q, (err, data) => {
         if (err) {
             console.error("Database query error:", err);
@@ -195,6 +194,7 @@ app.get("/movie_db", (req,res)=>{
         return res.json(data)
     })
 });
+
 app.get("/movie", (req,res)=>{
     const query = "SELECT * FROM movie;";
     db.query(query,(err, data)=>{
@@ -215,6 +215,48 @@ app.post("/movie", (req,res)=>{
         return res.json("Movie successfully created.");
     })
 });
+
+app.get("/selection/:user_id", async (req, res) => {
+    const { user_id } = req.params;
+
+    try {
+        const sql = `
+            SELECT movie.*, 
+                GROUP_CONCAT(keyword.keyword_name) AS keywords, 
+                GROUP_CONCAT(DISTINCT genre.genre_name) AS genres, 
+                GROUP_CONCAT(DISTINCT languages.full_name) AS languages, 
+                images.poster_path AS poster
+            FROM selection
+            JOIN movie ON selection.movie_id = movie.movie_id
+            JOIN movie_genre ON selection.movie_id = movie_genre.movie_id
+            JOIN genre ON movie_genre.genre_id = genre.genre_id
+            JOIN keyword_movie ON selection.movie_id = keyword_movie.movie_id
+            JOIN keyword ON keyword_movie.keyword_id = keyword.keyword_id 
+            JOIN languages_movie ON selection.movie_id = languages_movie.movie_id
+            JOIN languages ON languages_movie.language_id = languages.language_id
+            JOIN images ON selection.movie_id = images.movie_id
+            WHERE selection.user_id = 3
+            GROUP BY movie.movie_id;   
+        `;
+        const [selectionData] = await promiseDb.query(sql, [user_id]);
+
+        if (selectionData.length === 0) {
+            return res.status(404).json({ error: "Selection not found for this user" });
+        }
+
+        const formattedSelectionData = selectionData.map(movie => ({
+            ...movie,
+            keywords: movie.keywords.split(',')
+        }));
+
+        res.json(formattedSelectionData);
+    } catch (err) {
+        console.error("Error fetching selection data:", err);
+        res.status(500).json({ error: "Failed to fetch selection data" });
+    }
+});
+
+
 
 app.listen(8800, () => {
     console.log("Express server listening on port 8800");
