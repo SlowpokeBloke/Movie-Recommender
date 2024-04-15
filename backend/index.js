@@ -40,6 +40,7 @@ app.get("/", (req, res)=>{
     console.log("Received request for /")
     res.json("hello this is the backend")
 })
+
 app.get("/movie", (req,res)=>{
     const q = "SHOW TABLES;"
     db.query(q,(err,data)=>{
@@ -48,6 +49,7 @@ app.get("/movie", (req,res)=>{
     })
 
 })
+
 app.post('/createAccount', (req,res) => {
     const { full_name, age, email, password } = req.body;
     bcrypt.hash(password, 10, (err, hash) => { // Hash the password
@@ -185,7 +187,7 @@ app.post("/submitQuiz", async (req,res)=>{
             res.status(500).json({ status: "Error", message: "Failed to process quiz submission." });
         }
     }
-    });
+});
 
 app.get("/movie_db", (req,res)=>{
     const query = "SHOW TABLES;";
@@ -202,6 +204,7 @@ app.get("/movie", (req,res)=>{
         return res.json(data)
     })
 });
+
 app.post("/movie", (req,res)=>{
     const query = "INSERT INTO movie (`title`,`runtime`,`overview`,`release_date`) VALUES (?)";
     const values = [
@@ -235,7 +238,7 @@ app.get("/selection/:user_id", async (req, res) => {
             JOIN languages_movie ON selection.movie_id = languages_movie.movie_id
             JOIN languages ON languages_movie.language_id = languages.language_id
             JOIN images ON selection.movie_id = images.movie_id
-            WHERE selection.user_id = 3
+            WHERE selection.user_id = ?
             GROUP BY movie.movie_id;   
         `;
         const [selectionData] = await promiseDb.query(sql, [user_id]);
@@ -255,8 +258,6 @@ app.get("/selection/:user_id", async (req, res) => {
         res.status(500).json({ error: "Failed to fetch selection data" });
     }
 });
-
-
 
 app.listen(8800, () => {
     console.log("Express server listening on port 8800");

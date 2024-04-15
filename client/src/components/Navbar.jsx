@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import "./Navbar.css";
 
+
 export const Navbar = () => {
-    const [menuOpen, setMenuOpen] = useState(false); // Correctly initialize menuOpen and setMenuOpen using array destructuring
+    const [menuOpen, setMenuOpen] = useState(false);
 
     return (
         <nav>
@@ -17,17 +18,14 @@ export const Navbar = () => {
                 <span></span>
             </div>
             <ul className={menuOpen ? "open" : ""}>
-                <li>
-                    <NavLink to="/">Home</NavLink>
-                </li>
-                <li>
-                    <NavLink to="/Quiz">Quiz</NavLink>
+                 <li>
+                    <NavLink to="/Quiz/:user_id">Quiz</NavLink>
                 </li>
                 <li>
                     <NavLink to="/UserAccount">Account</NavLink>
                 </li>
                 <li>
-                    <NavLink to="/Login">Login</NavLink>
+                    <NavLink to="/">Logout</NavLink>
                 </li>
             </ul>
         </nav>
