@@ -83,6 +83,34 @@ input[type="checkbox"] {
   border-color: #1c1225;
 }
 
+.actor-list {
+  list-style-type: none;
+  padding: 8px;
+}
+
+.actor-list .actor-item {
+  padding: 8px;
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.actor-list .actor-item:hover {
+  background-color: #f5f5f5;
+}
+
+.actor-list .actor-item.selected {
+  background-color: #1c1225;
+  color: white;
+  border-color: black; 
+}
+
+.check-pic img {
+  /* Change the color of the check icon to white */
+  filter: brightness(0) invert(1);
+}
 
 .select-genre-button,
 .select-actor-name,

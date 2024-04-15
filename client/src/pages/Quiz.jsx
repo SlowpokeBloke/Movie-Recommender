@@ -280,10 +280,14 @@ const Quiz = () => {
                             />
                             {/* Display filtered actors */}
                             {searchInput && (
-                                <ul className="list-items">
+                                <ul className="actor-list">
                                     {filteredActors.slice(0, 10).map((actor) => (
-                                        <li key={actor.actor_id} className="item" onClick={() => handleActorSelect(actor.actor_id)}>
-                                            <span className="item-text">{actor.actor_name}</span>
+                                        <li
+                                            key={actor.actor_id}
+                                            className={`actor-item ${selectedActors.includes(actor.actor_id) ? 'selected' : ''}`}
+                                            onClick={() => handleActorSelect(actor.actor_id)}
+                                        >
+                                            <span className="actor-item-text">{actor.actor_name}</span>
                                             <span className={`check-pic ${selectedActors.includes(actor.actor_id) ? '' : 'check-pic-hidden'}`}>
                                                 <img src={check} alt="Check" width="10" height="10" />
                                             </span>
