@@ -8,9 +8,9 @@ const app = express();
 
 let promiseDb;
     createConnection({
-        host: "localhost", 
+        host: "movie-recomm.cracaa44anex.us-east-2.rds.amazonaws.com", 
         user: "root",
-        password: "lele123!",
+        password: "Lele123!",
         database: "movie_recommender"
     }).then(db => {
         promiseDb = db;
@@ -20,9 +20,9 @@ let promiseDb;
     });
 
 const db = mysql.createConnection({
-    host: "localhost", 
+    host: "movie-recomm.cracaa44anex.us-east-2.rds.amazonaws.com", 
     user: "root",
-    password: "lele123!",
+    password: "Lele123!",
     database: "movie_recommender"
   });
 
@@ -121,7 +121,7 @@ app.get("/movie_table", (req, res) => {
 
 app.get("/actor", (req, res) => {
     console.log("Handling /movie request");
-    const q = "SELECT * FROM actor;";
+    const q = "SELECT * FROM actor LIMIT 600";
     db.query(q, (err, data) => {
         if (err) {
             console.error("Database query error:", err);
