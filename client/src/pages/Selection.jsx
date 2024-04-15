@@ -102,7 +102,7 @@ const Selection = () => {
 
                                    <div className="result-output-section">
                                         <div className="result-output-section1">Movie Title: {selection.title}</div>
-                                        <div className="result-output-section1">Run Time: {selection.runtime}</div>
+                                        <div className="result-output-section1">Run Time: {selection.runtime} mins</div>
                                         <div className="result-output-section1">Release Date: {formatDate(selection.release_date)}</div>
                                    </div>
                                    

@@ -122,7 +122,7 @@ app.get("/movie_table", (req, res) => {
 
 app.get("/actor", (req, res) => {
     console.log("Handling /movie request");
-    const q = "SELECT * FROM actor LIMIT 600;";
+    const q = "SELECT * FROM actor;";
     db.query(q, (err, data) => {
         if (err) {
             console.error("Database query error:", err);
