@@ -44,7 +44,7 @@ const Home = () => {
 
                 <div className="collage">
 
-                    <div class="skewed">
+                    <div className="skewed">
                         <div className="row">
                             <div className="poster"><img src={pulp} alt="pulp fiction poster" /></div>
                             <div className="poster"><img src={war} alt="world war z poster" /></div>
