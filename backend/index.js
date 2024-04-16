@@ -192,6 +192,7 @@ async function selectCriteriaForMovie(user_id, response_id){
     JOIN actor a ON am.actor_id = a.actor_id
     JOIN movie_genre mg ON m.movie_id = mg.movie_id
     JOIN genre g ON mg.genre_id = g.genre_id
+    JOIN total_votes v ON m.movie_id = v.movie_id
         WHERE EXISTS (
                 SELECT 1 FROM response_actor ra 
                 WHERE ra.actor_id = a.actor_id AND ra.response_id = ${response_id}
@@ -199,7 +200,6 @@ async function selectCriteriaForMovie(user_id, response_id){
                 SELECT 1 FROM response_genre rg 
                 WHERE rg.genre_id = g.genre_id AND rg.response_id = ${response_id}
         )
-        WHERE 1 = 1
         ${releaseDateChosen}
         ${ratingsChosen}
         GROUP BY m.movie_id
