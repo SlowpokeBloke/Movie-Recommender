@@ -1,51 +1,121 @@
-
-body{
+body {
   font-size: 18px;
   font-weight: bold;
-  }
+}
 
-.title{
+.title {
   margin-top: 20px;
   font-size: 30px;
   margin-bottom: 0px;
 }
-.question{
+
+.question {
   font-size: 23px;
+  text-align: center;
 }
-.container, .night-container, .genre-container, .actors-container, 
-.date-container, .rating-container{
+
+.container,
+.night-container,
+.genre-container,
+.actors-container,
+.date-container,
+.rating-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 10px;
 }
-.night-container{
+
+.night-container {
   margin-bottom: 20px;
 }
-.date-container{
-  margin-bottom:60px;
+
+.date-container {
+  margin-bottom: 60px;
   width: 370px;
 }
 
-input[type="checkbox"]{
-  margin-right:20px;  
-  align-items:center;
+input[type="checkbox"] {
+  margin-right: 20px;
+  align-items: center;
   vertical-align: middle;
-  accent-color:rgb(42, 19, 63);
-  cursor:pointer;
+  accent-color: rgb(42, 19, 63);
+  cursor: pointer;
 }
-.night-container{
+
+.night-container {
   margin-top: 50px;
   vertical-align: middle;
 }
-.box{
-  margin-top:30px;
-  margin-bottom: 20px;
+
+.box {
+  margin-top: 30px;
+  margin-bottom: 5px;
 }
-.genre-container{
+
+.genre-container {
   vertical-align: middle;
 }
-.select-genre-button,.select-actor-name,.select-release-date-button,.select-rating-button{
+
+.selected-actors { 
+  padding-bottom: 30px;
+  font-size: 18px;
+}
+
+.explanation {
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.search-bar {
+  width: 50%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid black;
+  border-radius: 25px;
+  border-width: 2px;
+  box-sizing: border-box;
+}
+
+.search-bar:focus {
+  outline: none;
+  border-color: #1c1225;
+}
+
+.actor-list {
+  list-style-type: none;
+  padding: 8px;
+}
+
+.actor-list .actor-item {
+  padding: 8px;
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.actor-list .actor-item:hover {
+  background-color: #f5f5f5;
+}
+
+.actor-list .actor-item.selected {
+  background-color: #1c1225;
+  color: white;
+  border-color: black; 
+}
+
+.check-pic img {
+  /* Change the color of the check icon to white */
+  filter: brightness(0) invert(1);
+}
+
+.select-genre-button,
+.select-actor-name,
+.select-release-date-button,
+.select-rating-button {
   margin-top: 40px;
   margin-bottom: 30px;
   padding-left: 20px;
@@ -54,162 +124,182 @@ input[type="checkbox"]{
   padding-bottom: 5px;
   border-radius: 25px;
   font-size: 15px;
-  font-weight:bold;
-  border-color:black;
+  font-weight: bold;
+  border-color: black;
   border-style: solid;
-  border-width:2px;
-  background-color:#ffbe40;
-  cursor:pointer;
-  box-shadow: 0 5px 10px rgba(0, 0, 0,0.1);  
+  border-width: 2px;
+  background-color: #ffbe40;
+  cursor: pointer;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
-.select-rating-button, .select-release-date-button{
-  margin-bottom:0px;
+
+.select-rating-button,
+.select-release-date-button {
+  margin-bottom: 0px;
 }
-.down-pic{
+
+.down-pic {
   width: 20px;
   vertical-align: middle;
   margin-left: 80px;
-  margin-right:0;
+  margin-right: 0;
 }
 
-
-.submit-button{
-  padding-left:70px;
+.submit-button {
+  padding-left: 70px;
   padding-right: 70px;
   padding-top: 12px;
   padding-bottom: 12px;
   background-color: rgb(92, 92, 154);
-  color:black;
-  font-size:15px;
+  color: black;
+  font-size: 15px;
   font-weight: bold;
   border-radius: 30px;
-  border:none;
+  border: none;
   transition-property: all 0.15s;
   margin-bottom: 58px;
   margin-top: 50px;
 }
-.submit-button:hover{
-  background-color: rgb(82, 82, 136);
-  cursor:pointer;
-}
-.submit-button:active{
 
-  color:rgb(21, 21, 21);
-  opacity: 0.9;
-  cursor:pointer;
+.submit-button:hover {
+  background-color: rgb(82, 82, 136);
+  cursor: pointer;
 }
-.list-items{
-  position:relative;
+
+.submit-button:active {
+
+  color: rgb(21, 21, 21);
+  opacity: 0.9;
+  cursor: pointer;
+}
+
+.list-items {
+  position: relative;
   margin-top: 15px;
   border-radius: 25px;
   padding-left: 20px;
   padding-right: 80px;
   padding-top: 5px;
   padding-bottom: 5px;
-  background-color:rgb(255,190,64); 
-}
-.list-items .item{
-  display: flex;
-  align-items: center;
-  list-style:none;
-  height: 50px;
-  cursor: pointer;
-  
-}
-.list-items.open{
-  display:block;
+  background-color: rgb(255, 190, 64);
 }
 
-.item .item-text{
+.list-items .item {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  height: 50px;
+  cursor: pointer;
+
+}
+
+.list-items.open {
+  display: block;
+}
+
+.item .item-text {
   font-size: 12px;
   height: 12px;
   font-weight: bold;
-  font-family:Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
-.checkboxes{
+
+.checkboxes {
   display: flex;
   align-items: center;
-  justify-content:center;
+  justify-content: center;
   height: 16px;
   width: 16px;
   border-radius: 4px;
   margin-right: 12px;
   border: 2px solid black;
 }
-.item .checkboxes{
+
+.item .checkboxes {
   display: flex;
   align-items: center;
-  justify-content:center;
+  justify-content: center;
   height: 16px;
   width: 16px;
   border-radius: 4px;
   margin-right: 12px;
 }
-.checkboxes .check-pic{
-    width: 10px;
-    height: 10px;
+
+.checkboxes .check-pic {
+  width: 10px;
+  height: 10px;
 }
-.check-pic-hidden{
+
+.check-pic-hidden {
   visibility: hidden;
 }
-.film-wrap{
+
+.film-wrap {
   width: 33%;
   margin-right: auto;
   margin-left: auto;
-  
+
 }
-.film-wrapper-left{
+
+.film-wrapper-left {
   position: absolute;
   top: 20;
-  left: 50%; 
+  left: 50%;
   transform: translateX(-95%);
   z-index: 10;
 }
+
 .film-wrapper-left2 {
   position: absolute;
-  top: calc(20px + 140px); 
+  top: calc(20px + 140px);
   left: 50%;
   transform: translateX(-95%);
-  z-index: 9; 
+  z-index: 9;
 }
-.film-wrapper-left3{
+
+.film-wrapper-left3 {
   position: absolute;
-  top: calc(20px + 280px); 
+  top: calc(20px + 280px);
   left: 50%;
   transform: translateX(-95%);
   z-index: 8;
 }
-.film-wrapper-left4{
+
+.film-wrapper-left4 {
   position: absolute;
-  top: calc(20px + 420px); 
+  top: calc(20px + 420px);
   left: 50%;
   transform: translateX(-95%);
   z-index: 7;
 }
-.film-wrapper-left5{
+
+.film-wrapper-left5 {
   position: absolute;
-  top: calc(20px + 560px); 
+  top: calc(20px + 560px);
   left: 50%;
   transform: translateX(-95%);
   z-index: 6;
 }
-.film-wrapper-left6{
+
+.film-wrapper-left6 {
   position: absolute;
-  top: calc(20px + 700px); 
+  top: calc(20px + 700px);
   left: 50%;
   transform: translateX(-95%);
   z-index: 5;
 }
-.film-wrapper-left7{
+
+.film-wrapper-left7 {
   position: absolute;
-  top: calc(20px + 840px); 
+  top: calc(20px + 840px);
   left: 50%;
   transform: translateX(-95%);
   z-index: 4;
 }
-.film-wrapper-left8{
+
+.film-wrapper-left8 {
   position: absolute;
-  top: calc(20px + 980px); 
+  top: calc(20px + 980px);
   left: 50%;
   transform: translateX(-95%);
   z-index: 4;
@@ -217,94 +307,115 @@ input[type="checkbox"]{
 
 .film-wrapper-right {
   position: absolute;
-  top: 20; 
-  left: 50%; 
-  transform: translateX(62%); 
-  z-index: 10; 
-
-}
-.film-wrapper-right2 {
-  position: absolute;
-  top: calc(20px + 140px); 
+  top: 20;
   left: 50%;
   transform: translateX(62%);
-  z-index: 9; 
+  z-index: 10;
+
 }
-.film-wrapper-right3{
+
+.film-wrapper-right2 {
   position: absolute;
-  top: calc(20px + 280px); 
+  top: calc(20px + 140px);
+  left: 50%;
+  transform: translateX(62%);
+  z-index: 9;
+}
+
+.film-wrapper-right3 {
+  position: absolute;
+  top: calc(20px + 280px);
   left: 50%;
   transform: translateX(62%);
   z-index: 8;
 }
-.film-wrapper-right4{
+
+.film-wrapper-right4 {
   position: absolute;
-  top: calc(20px + 420px); 
+  top: calc(20px + 420px);
   left: 50%;
   transform: translateX(62%);
   z-index: 7;
 }
-.film-wrapper-right5{
+
+.film-wrapper-right5 {
   position: absolute;
-  top: calc(20px + 560px); 
+  top: calc(20px + 560px);
   left: 50%;
   transform: translateX(62%);
   z-index: 6;
 }
-.film-wrapper-right6{
+
+.film-wrapper-right6 {
   position: absolute;
-  top: calc(20px + 700px); 
+  top: calc(20px + 700px);
   left: 50%;
   transform: translateX(62%);
   z-index: 5;
 }
-.film-wrapper-right7{
+
+.film-wrapper-right7 {
   position: absolute;
-  top: calc(20px + 840px); 
-  left: 50%;
-  transform: translateX(62%);
-  z-index: 4;
-}
-.film-wrapper-right8{
-  position: absolute;
-  top: calc(20px + 980px); 
+  top: calc(20px + 840px);
   left: 50%;
   transform: translateX(62%);
   z-index: 4;
 }
 
-.container{
-  background-color: rgb(255,190,64);
+.film-wrapper-right8 {
+  position: absolute;
+  top: calc(20px + 980px);
+  left: 50%;
+  transform: translateX(62%);
+  z-index: 4;
+}
+
+.container {
+  background-color: rgb(255, 190, 64);
   width: 50%;
   margin-right: auto;
   margin-left: auto;
-  position:relative;
-}
-.parent-container-film{
   position: relative;
 }
-.film-wrapper-left, .film-wrapper-right,
-.film-wrapper-left2, .film-wrapper-right2,
-.film-wrapper-left3, .film-wrapper-right3,
-.film-wrapper-left4, .film-wrapper-right4,
-.film-wrapper-left5, .film-wrapper-right5,
-.film-wrapper-left6, .film-wrapper-right6,
-.film-wrapper-left7, .film-wrapper-right7,
-.film-wrapper-left8, .film-wrapper-right8 {
-    pointer-events: none;
+
+.parent-container-film {
+  position: relative;
 }
+
+.film-wrapper-left,
+.film-wrapper-right,
+.film-wrapper-left2,
+.film-wrapper-right2,
+.film-wrapper-left3,
+.film-wrapper-right3,
+.film-wrapper-left4,
+.film-wrapper-right4,
+.film-wrapper-left5,
+.film-wrapper-right5,
+.film-wrapper-left6,
+.film-wrapper-right6,
+.film-wrapper-left7,
+.film-wrapper-right7,
+.film-wrapper-left8,
+.film-wrapper-right8 {
+  pointer-events: none;
+}
+
 .pics-above-container {
-  display: flex; 
-  justify-content: center; 
-  align-items: center; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-left: 724px;
 }
 
-.icons-above, .icons-above2 {
+.icons-above,
+.icons-above2 {
   /* Your specific width settings */
-  width: 70px; /* Example width, adjust as needed */
+  width: 70px;
+  /* Example width, adjust as needed */
 }
 
 .icons-above2 {
-  width: 90px; /* Different width for .icons-above2 elements */
+  width: 90px;
+  /* Different width for .icons-above2 elements */
 }

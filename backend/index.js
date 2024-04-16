@@ -41,6 +41,7 @@ app.get("/", (req, res)=>{
     console.log("Received request for /")
     res.json("hello this is the backend")
 })
+
 app.get("/movie", (req,res)=>{
     const q = "SHOW TABLES;"
     db.query(q,(err,data)=>{
@@ -49,6 +50,7 @@ app.get("/movie", (req,res)=>{
     })
 
 })
+
 app.post('/createAccount', (req,res) => {
     const { full_name, age, email, password } = req.body;
     bcrypt.hash(password, 10, (err, hash) => { // Hash the password
@@ -121,7 +123,7 @@ app.get("/movie_table", (req, res) => {
 
 app.get("/actor", (req, res) => {
     console.log("Handling /movie request");
-    const q = "SELECT * FROM actor LIMIT 600;";
+    const q = "SELECT * FROM actor;";
     db.query(q, (err, data) => {
         if (err) {
             console.error("Database query error:", err);
@@ -299,6 +301,7 @@ app.get("/movie", (req,res)=>{
         return res.json(data)
     })
 });
+
 app.post("/movie", (req,res)=>{
     const query = "INSERT INTO movie (`title`,`runtime`,`overview`,`release_date`) VALUES (?)";
     const values = [
