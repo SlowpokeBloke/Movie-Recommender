@@ -116,7 +116,7 @@ const Quiz = () => {
     const[formSubmitted, setFormSubmitted] = useState(false);
     //contains user_id
     //debugging
-    const{ user_id } = useParams();
+    const{ user_id} = useParams();
     console.log(useParams());
     console.log("user_id from useParams:", user_id);
      
@@ -144,15 +144,17 @@ const Quiz = () => {
         console.log("Submitting the following data:", dataToSubmit);
         setFormSubmitted(true);
         
-        // true navigation
+        // true navigation w/params
         try {
             console.log("Submitting quiz for user_id:", user_id);
             const response = await axios.post('http://localhost:8800/submitQuiz', dataToSubmit);
             console.log("Quiz API Response:", response.data);
             if (response.data.status === "Success") {
                  // shows user_id in navigation as a token ot pass user_id 
-                 console.log(`Navigating to Selection with user_id: ${user_id}`);
-                 navigate(`/Selection/${user_id}`);
+                // console.log(`Navigating to Selection with user_id: ${user_id} and selection_id: ${selection_id}`);
+                 //fetches selection_id from backend
+                 const {selection_id} = response.data;
+                 navigate(`/Selection/${user_id}/${selection_id}`);
     
             } else {
                 console.error("Submission failed with status:", response.data.status);
@@ -281,13 +283,7 @@ const Quiz = () => {
                         { /* only shows list if the button is clicked */}
                     <ul className="list-items" style={{ display: releaseDateDropDown.isOpen ? 'block' : 'none' }}>
                             {/* one item selected in list */}
-                        <li className = "item" onClick={() => handleItemSelect(releaseDateDropDown, "Released in the last 5 years")}>
-                            <span className = "checkboxes">
-                                {/* displays check if selected and if not then no check is shown */}
-                                <img className={`check-pic ${ releaseDateDropDown.selectedValue=== "Released in the last 5 years" ? '' : 'check-pic-hidden'}`} src ={check} alt="Check"></img>
-                            </span>
-                            <span className= "item-text">Released in the last 5 years</span>
-                        </li>
+                        
                         <li className = "item" onClick={() => handleItemSelect(releaseDateDropDown, "Released in the last 10 years")}>
                             <span className = "checkboxes">
                                 <img className={`check-pic ${releaseDateDropDown.selectedValue === "Released in the last 10 years" ? '' : 'check-pic-hidden'}`} src ={check} alt="Check"></img>

@@ -11,29 +11,33 @@ import cinema from '../icon_pics/cinema-clapboard.png'
 
 const Selection = () => {
      const [selectionData, setSelectionData] = useState([]);
-     const { user_id } = useParams();
+     const { user_id, selection_id } = useParams();
      const navigate = useNavigate();
 
      useEffect(() => {
           const fetchSelectionData = async () => {
+               console.log("User ID:", user_id);
+               console.log("Selection ID:", selection_id);
+               
                try {
-                    const response = await axios.get(`http://localhost:8800/selection/${user_id}`);
+                    const response = await axios.get(`http://localhost:8800/selection/${user_id}/${selection_id}`);
                     setSelectionData(response.data);
                } catch (error) {
                     console.error("Error fetching selection data:", error);
                }
+               
           };
 
           fetchSelectionData();
-     }, [user_id]);
+     }, [user_id,selection_id]);
 
      const handleQuizAgainClick = () => {
           console.log(`Navigating to Quiz with user_id: ${user_id}`);
           navigate(`/Quiz/${user_id}`);
      };
-
+     //navigates with user_id
      const handleGoToAccountClick = () => {
-          navigate('/UserAccount');
+          navigate(`/UserAccount/${user_id}`);
      };
 
      const formatDate = (dateString) => {
@@ -101,23 +105,23 @@ const Selection = () => {
                                    </div>
 
                                    <div className="result-output-section">
-                                        <div className="result-output-section1">Movie Title: {selection.title}</div>
-                                        <div className="result-output-section1">Run Time: {selection.runtime}</div>
-                                        <div className="result-output-section1">Release Date: {formatDate(selection.release_date)}</div>
+                                        <div className="result-output-section1">Movie Title:<p>{selection.title}</p></div>
+                                        <div className="result-output-section1">Run Time:<p>{selection.runtime} mins</p></div>
+                                        <div className="result-output-section1">Release Date: <p>{formatDate(selection.release_date)}</p></div>
                                    </div>
                                    
                                    <div className="result-output-section2">
-                                        <div className="result-output-overview">Overview: {selection.overview}</div>
+                                        <div className="result-output-overview">Overview: <p>{selection.overview}</p></div>
                                         {Array.isArray(selection.genres) ? (
                                              <div className="result-ouput-genre">Genres: {selection.genres.join(', ')}</div>
                                         ) : (
-                                             <div className="result-ouput-genre">Genres: {selection.genres}</div>
+                                             <div className="result-ouput-genre">Genres: <p>{selection.genres}</p></div>
                                         )}
-                                        <div className="result-output-keywords">Keywords: {selection.keywords.join(', ')}</div>
+                                        <div className="result-output-keywords">Keywords: <p>{selection.keywords.join(', ')}</p></div>
                                         {Array.isArray(selection.languages) ? (
-                                             <div className="result-ouput-language">Languages: {selection.languages.join(', ')}</div>
+                                             <div className="result-ouput-language">Languages:{selection.languages.join(', ')}</div>
                                         ) : (
-                                             <div className="result-ouput-language">Languages: {selection.languages}</div>
+                                             <div className="result-ouput-language">Languages:<p>{selection.languages}</p> </div>
                                         )}
                                    </div>
 

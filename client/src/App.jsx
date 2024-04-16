@@ -18,7 +18,7 @@ function App() {
           <Route path="/CreateAccount" element={<CreateAccount/>}/>
           <Route path="/Quiz/:user_id" element={<Quiz />} />
           <Route path="/UserAccount" element={<UserAccount/>}/>
-          <Route path="/Selection/:user_id" element={<Selection/>}/>
+          <Route path="/Selection/:user_id/:selection_id" element={<Selection/>}/>
         </Routes>
     </div>
   );
