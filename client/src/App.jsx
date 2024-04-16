@@ -25,7 +25,7 @@ function App() {
           <Route path="/Login" element={<Login/>}/>
           <Route path="/CreateAccount" element={<CreateAccount/>}/>
           <Route path="/Quiz/:user_id" element={<Quiz />} />
-          <Route path="/UserAccount" element={<UserAccount/>}/>
+          <Route path="/UserAccount/:user_id" element={<UserAccount/>}/>
           <Route path="/Selection/:user_id/:selection_id" element={<Selection/>}/>
         </Routes>
     </div>

@@ -276,7 +276,7 @@ const Quiz = () => {
                             <input
                                 type="text"
                                 className="search-bar"
-                                placeholder="Search actors..."
+                                placeholder="Search Actors..."
                                 value={searchInput}
                                 onChange={handleSearchInputChange}
                             />
@@ -289,10 +289,11 @@ const Quiz = () => {
                                             className={`actor-item ${selectedActors.includes(actor.actor_id) ? 'selected' : ''}`}
                                             onClick={() => handleActorSelect(actor.actor_id)}
                                         >
-                                            <span className="actor-item-text">{actor.actor_name}</span>
                                             <span className={`check-pic ${selectedActors.includes(actor.actor_id) ? '' : 'check-pic-hidden'}`}>
                                                 <img src={check} alt="Check" width="10" height="10" />
                                             </span>
+                                            <span className="actor-item-text">{actor.actor_name}</span>
+                                            
                                         </li>
                                     ))}
                                 </ul>
