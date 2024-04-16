@@ -129,7 +129,7 @@ const Quiz = () => {
     const [formSubmitted, setFormSubmitted] = useState(false);
     //contains user_id
     //debugging
-    const { user_id } = useParams();
+    const { user_id} = useParams();
     console.log(useParams());
     console.log("user_id from useParams:", user_id);
 
@@ -157,15 +157,17 @@ const Quiz = () => {
         console.log("Submitting the following data:", dataToSubmit);
         setFormSubmitted(true);
 
-        // true navigation
+        // true navigation w/params
         try {
             console.log("Submitting quiz for user_id:", user_id);
             const response = await axios.post('http://localhost:8800/submitQuiz', dataToSubmit);
             console.log("Quiz API Response:", response.data);
             if (response.data.status === "Success") {
                 // shows user_id in navigation as a token ot pass user_id 
-                console.log(`Navigating to Selection with user_id: ${user_id}`);
-                navigate(`/Selection/${user_id}`);
+               // console.log(`Navigating to Selection with user_id: ${user_id} and selection_id: ${selection_id}`);
+                 //fetches selection_id from backend
+                 const {selection_id} = response.data;
+                navigate(`/Selection/${user_id}/${selection_id}`);
 
             } else {
                 console.error("Submission failed with status:", response.data.status);
@@ -274,7 +276,7 @@ const Quiz = () => {
                             <input
                                 type="text"
                                 className="search-bar"
-                                placeholder="Search actors..."
+                                placeholder="Search Actors..."
                                 value={searchInput}
                                 onChange={handleSearchInputChange}
                             />
@@ -287,10 +289,11 @@ const Quiz = () => {
                                             className={`actor-item ${selectedActors.includes(actor.actor_id) ? 'selected' : ''}`}
                                             onClick={() => handleActorSelect(actor.actor_id)}
                                         >
-                                            <span className="actor-item-text">{actor.actor_name}</span>
                                             <span className={`check-pic ${selectedActors.includes(actor.actor_id) ? '' : 'check-pic-hidden'}`}>
                                                 <img src={check} alt="Check" width="10" height="10" />
                                             </span>
+                                            <span className="actor-item-text">{actor.actor_name}</span>
+                                            
                                         </li>
                                     ))}
                                 </ul>

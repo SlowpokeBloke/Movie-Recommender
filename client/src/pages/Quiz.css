@@ -69,8 +69,11 @@ input[type="checkbox"] {
 }
 
 .search-bar {
-  width: 50%;
-  padding: 8px;
+  width: 240px;
+  padding-bottom:6px;
+  padding-top:6px;
+  padding-left: 6px;
+  padding-right: 3px;
   font-size: 16px;
   border: 1px solid black;
   border-radius: 25px;
@@ -110,6 +113,7 @@ input[type="checkbox"] {
 .check-pic img {
   /* Change the color of the check icon to white */
   filter: brightness(0) invert(1);
+  margin-right:10px;
 }
 
 .select-genre-button,

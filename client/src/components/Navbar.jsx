@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useParams } from 'react-router-dom';
 import "./Navbar.css";
 
 
 export const Navbar = () => {
+    const { user_id} = useParams();
+    console.log(useParams());
+    console.log("user_id from useParams:", user_id);
     const [menuOpen, setMenuOpen] = useState(false);
 
     return (
@@ -19,10 +22,10 @@ export const Navbar = () => {
             </div>
             <ul className={menuOpen ? "open" : ""}>
                  <li>
-                    <NavLink to="/Quiz/:user_id">Quiz</NavLink>
+                    <NavLink to={"/Quiz/:user_id"}>Quiz</NavLink>
                 </li>
                 <li>
-                    <NavLink to="/UserAccount">Account</NavLink>
+                    <NavLink to = {"/UserAccount/:user_id"}>Account</NavLink>
                 </li>
                 <li>
                     <NavLink to="/">Logout</NavLink>
