@@ -4,6 +4,7 @@ import cors from "cors";
 import { createConnection } from "mysql2/promise";
 import bcrypt from "bcrypt";
 
+
 const app = express();
 
 let promiseDb;
@@ -25,6 +26,26 @@ const db = mysql.createConnection({
     password: "Lele123!",
     database: "movie_recommender"
 });
+// let promiseDb;
+//     createConnection({
+//         host: "localhost", 
+//         host: "localhost",
+//         user: "root",
+//         password: "Lele123!",
+//         database: "movie_recommender"
+//     }).then(db => {
+//         promiseDb = db;
+//         console.log("Promise-based database connection established.");
+//     }).catch(err => {
+//         console.error("Error establishing promise-based database connection:", err);
+//     });
+
+// const db = mysql.createConnection({
+//     host: "localhost", 
+//     user: "root",
+//     password: "Lele123!",
+//     database: "movie_recommender"
+// });
 
 db.connect((err) => {
     if (err) {
@@ -145,8 +166,165 @@ app.get("/genre", (req, res) => {
         return res.json(data);
     });
 });
+
+
+app.get("/p/:user_id", async (req, res) => {
+    console.log("Handling /profile request");
+    const {user_id} = req.params;
+    try{
+        const q =`
+        SELECT p.full_name, p.age FROM person p
+        WHERE p.user_id = ?;
+        `;
+        const nm = await promiseDb.query(q,[user_id]);
+        //const nm = await promiseDb.query(q);
+        if(nm===""){
+            return res.json({error: "No name found"});
+        }
+        console.log(nm);
+        return res.json(nm);
+    }catch(err){
+        console.error(err);
+        return res.json(err);
+    }
+});
+
+app.get("/fav_actors/:user_id", async (req, res) => {
+    console.log("Handling /fav_actor request");
+    const {user_id} = req.params;
+    try{
+    const q = 
+        `
+        SELECT DISTINCT a.actor_id, a.actor_name FROM responses r
+        JOIN response_actor ra
+        JOIN actor a
+        WHERE r.user_id = ?
+        AND r.response_id IN (SELECT MAX(response_id) FROM responses WHERE user_id=?)
+        AND r.response_id = ra.response_id
+        AND ra.actor_id = a.actor_id;
+        `;
+        const [fav_actors] = await promiseDb.query(q,[user_id,user_id]);
+        if(fav_actors.length===0){
+            return res.status(404).json({error: "Favorited actors not found for this user"});
+        }
+        console.log(fav_actors);
+        return res.json(fav_actors);
+    }catch(err){
+        console.error(err);
+        return res.json(err);
+    }
+    // db.query(q, (err, data) => {
+    //     if (err) {
+    //         console.error("Database query error:", err);
+    //         return res.json(err);
+    //     }
+    //     console.log("Database query success:", data);
+    //     return res.json(data);
+    // });
+});
+app.get("/fav_genres/:user_id", async (req, res) => {
+    console.log("Handling /fav_genre request");
+    const {user_id} = req.params;
+    try{
+    const q = 
+        `
+        SELECT DISTINCT g.genre_id, g.genre_name FROM responses r
+        JOIN response_genre rg
+        JOIN genre g
+        WHERE r.user_id = ?
+        AND r.response_id IN (SELECT MAX(response_id) FROM responses WHERE user_id=?)
+        AND r.response_id = rg.response_id
+        AND rg.genre_id = g.genre_id;
+        `;
+        const [fav_genres] = await promiseDb.query(q,[user_id,user_id]);
+        if(fav_genres.length===0){
+            return res.status(404).json({error: "Favorited genres not found for this user"});
+        }
+        return res.json(fav_genres);
+
+    }catch(err){
+        console.error(err);
+        return res.json(err);
+    }
+    // db.query(q, (err, data) => {
+    //     if (err) {
+    //         console.error("Database query error:", err);
+    //         return res.json(err);
+    //     }
+    //     console.log("Database query success:", data);
+    //     return res.json(data);
+    // });
+});
+
+
+app.get("/watch_list/:user_id", async (req, res) => {
+    console.log("Handling /watch_list request");
+    const {user_id} = req.params;
+    try{
+    const q = 
+        `
+        SELECT m.title FROM watch_list wl
+        JOIN movie m
+        WHERE wl.user_id = ?
+        AND m.movie_id = wl.movie_id;
+        `;
+        const [saved_movies] = await promiseDb.query(q,[user_id]);
+        if(saved_movies.length===0){
+            return res.status(404).json({error: "Saved movies not found for this user"});
+        }
+        console.log(saved_movies);
+        return res.json(saved_movies);
+
+    }catch(err){
+        console.error(err);
+        return res.json(err);
+    }
+});
+
+app.post("/submitToList"), async (req, res)=>{
+    if(!promiseDb){
+        console.log("Not connected to promiseDb");
+    }
+    console.log("Submitting movie selection");
+    console.log("Received movie selection:", req.body);
+
+    try{
+        
+
+    }catch(err){
+
+    }
+}
+
+async function insertMovieToList(user_id, movie_id){
+    console.log("Add List Entry, Parameters: ", [user_id, movie_id]);
+    const insertToList = `
+        INSERT INTO watch_list (user_id, movie_id)
+        VALUES (?, ?)
+    `;
+    try{
+        db.query(insertToList, [user_id, movie_id]);
+        console.log("New entry added to Watch List");
+    }catch(error){
+        console.error("Failed to insert entry into Watch List");
+    }
+}
+
+async function deleteMovieFromList(user_id, movie_id){
+    console.log("Del List Entry, Parameters: ", [user_id, movie_id]);
+    const deleteFromList =`
+        DELETE FROM watch_list WHERE user_id=? AND movie_id=?
+    `;
+    try{
+        db.query(deleteMovieFromList, [user_id, movie_id]);
+        console.log("New entry added to Watch List");
+    }catch(error){
+        console.error("Failed to insert entry into Watch List");
+    }
+}
+
 async function selectCriteriaForMovie(user_id, response_id){
-    // most rescent response id
+    // most recent response id
     const recentResponse= 
     `
     SELECT p.user_id, p.full_name, r.response_id, r.release_date, r.movie_night, r.ratings
@@ -201,11 +379,10 @@ async function selectCriteriaForMovie(user_id, response_id){
         )
         ${releaseDateChosen}
         ${ratingsChosen}
-        GROUP BY m.movie_id
         ORDER BY RAND()
         LIMIT 1;
     `;
-    
+    //GROUP BY m.movie_id
     const [movies] = await promiseDb.query(moviePool);
     if(movies.length === 0){
         console.log("No movies found based on user responses");
