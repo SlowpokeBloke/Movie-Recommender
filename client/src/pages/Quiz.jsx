@@ -320,13 +320,6 @@ const Quiz = () => {
                             { /* only shows list if the button is clicked */}
                             <ul className="list-items" style={{ display: releaseDateDropDown.isOpen ? 'block' : 'none' }}>
                                 {/* one item selected in list */}
-                                <li className="item" onClick={() => handleItemSelect(releaseDateDropDown, "Released in the last 5 years")}>
-                                    <span className="checkboxes">
-                                        {/* displays check if selected and if not then no check is shown */}
-                                        <img className={`check-pic ${releaseDateDropDown.selectedValue === "Released in the last 5 years" ? '' : 'check-pic-hidden'}`} src={check} alt="Check"></img>
-                                    </span>
-                                    <span className="item-text">Released in the last 5 years</span>
-                                </li>
                                 <li className="item" onClick={() => handleItemSelect(releaseDateDropDown, "Released in the last 10 years")}>
                                     <span className="checkboxes">
                                         <img className={`check-pic ${releaseDateDropDown.selectedValue === "Released in the last 10 years" ? '' : 'check-pic-hidden'}`} src={check} alt="Check"></img>
