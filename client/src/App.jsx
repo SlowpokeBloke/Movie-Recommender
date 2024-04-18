@@ -9,25 +9,17 @@ import Selection from "./pages/Selection";
 import "./App.css";
 
 function App() {
-  const location = useLocation();
-
-  // Define an array of paths where you want to show the Navbar
-  const navPaths = ["/Quiz", "/Selection", "/UserAccount"];
-
-  // Check if the current path is one of the paths in navPaths
-  const showNavbar = navPaths.some((path) => location.pathname.startsWith(path));
-
+ 
   return (
-    <div className="App">
-      {showNavbar && <Navbar />} {/* Render Navbar only if showNavbar is true */}
-      <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/Login" element={<Login/>}/>
-        <Route path="/CreateAccount" element={<CreateAccount/>}/>
-        <Route path="/Quiz/:user_id" element={<Quiz />} />
-        <Route path="/UserAccount/:user_id" element={<UserAccount/>}/>
-        <Route path="/Selection/:user_id/:selection_id" element={<Selection/>}/>
-      </Routes>
+    <div className="App"> 
+        <Routes>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/Login" element={<><Navbar /><Login/></>}/>
+          <Route path="/CreateAccount" element={<><Navbar /><CreateAccount/></>}/>
+          <Route path="/Quiz/:user_id" element={<><Navbar /><Quiz /></>} />
+          <Route path="/UserAccount/:user_id" element={<><Navbar /><UserAccount/></>}/>
+          <Route path="/Selection/:user_id/:selection_id" element={<><Navbar /><Selection/></>}/>
+        </Routes>
     </div>
   );
 }
