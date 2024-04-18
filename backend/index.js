@@ -4,12 +4,33 @@ import cors from "cors";
 import { createConnection } from "mysql2/promise";
 import bcrypt from "bcrypt";
 
+
 const app = express();
 
+// let promiseDb;
+//     createConnection({
+//         host: "localhost", 
+//         host: "localhost",
+//         user: "root",
+//         password: "Lele123!",
+//         database: "movie_recommender"
+//     }).then(db => {
+//         promiseDb = db;
+//         console.log("Promise-based database connection established.");
+//     }).catch(err => {
+//         console.error("Error establishing promise-based database connection:", err);
+//     });
+
+// const db = mysql.createConnection({
+//     host: "localhost", 
+//     user: "root",
+//     password: "Lele123!",
+//     database: "movie_recommender"
+// });
 let promiseDb;
     createConnection({
-        host: "movie-recomm.cracaa44anex.us-east-2.rds.amazonaws.com", 
-        host: "movie-recomm.cracaa44anex.us-east-2.rds.amazonaws.com",
+        host: "localhost", 
+        host: "localhost",
         user: "root",
         password: "Lele123!",
         database: "movie_recommender"
@@ -21,7 +42,7 @@ let promiseDb;
     });
 
 const db = mysql.createConnection({
-    host: "movie-recomm.cracaa44anex.us-east-2.rds.amazonaws.com", 
+    host: "localhost", 
     user: "root",
     password: "Lele123!",
     database: "movie_recommender"
@@ -202,11 +223,10 @@ async function selectCriteriaForMovie(user_id, response_id){
         )
         ${releaseDateChosen}
         ${ratingsChosen}
-        GROUP BY m.movie_id
         ORDER BY RAND()
         LIMIT 1;
     `;
-    
+    //GROUP BY m.movie_id
     const [movies] = await promiseDb.query(moviePool);
     if(movies.length === 0){
         console.log("No movies found based on user responses");
