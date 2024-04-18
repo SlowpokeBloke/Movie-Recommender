@@ -8,7 +8,6 @@ const app = express();
 
 let promiseDb;
     createConnection({
-        host: "movie-recomm.cracaa44anex.us-east-2.rds.amazonaws.com", 
         host: "movie-recomm.cracaa44anex.us-east-2.rds.amazonaws.com",
         user: "root",
         password: "Lele123!",
