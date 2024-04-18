@@ -3,7 +3,6 @@ import "./UserAccount.css";
 import { Link, NavLink, useParams } from 'react-router-dom';
 import axios from 'axios';
 import useDropDown from "../components/UseDropDown";
-import "./movieDropDown.js";
 import check from '../icon_pics/check.png';
 
 const UserAccount = () => {
