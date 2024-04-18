@@ -7,26 +7,6 @@ import bcrypt from "bcrypt";
 
 const app = express();
 
-// let promiseDb;
-//     createConnection({
-//         host: "localhost", 
-//         host: "localhost",
-//         user: "root",
-//         password: "Lele123!",
-//         database: "movie_recommender"
-//     }).then(db => {
-//         promiseDb = db;
-//         console.log("Promise-based database connection established.");
-//     }).catch(err => {
-//         console.error("Error establishing promise-based database connection:", err);
-//     });
-
-// const db = mysql.createConnection({
-//     host: "localhost", 
-//     user: "root",
-//     password: "Lele123!",
-//     database: "movie_recommender"
-// });
 let promiseDb;
     createConnection({
         host: "localhost", 
@@ -47,6 +27,26 @@ const db = mysql.createConnection({
     password: "Lele123!",
     database: "movie_recommender"
 });
+// let promiseDb;
+//     createConnection({
+//         host: "localhost", 
+//         host: "localhost",
+//         user: "root",
+//         password: "Lele123!",
+//         database: "movie_recommender"
+//     }).then(db => {
+//         promiseDb = db;
+//         console.log("Promise-based database connection established.");
+//     }).catch(err => {
+//         console.error("Error establishing promise-based database connection:", err);
+//     });
+
+// const db = mysql.createConnection({
+//     host: "localhost", 
+//     user: "root",
+//     password: "Lele123!",
+//     database: "movie_recommender"
+// });
 
 db.connect((err) => {
     if (err) {
