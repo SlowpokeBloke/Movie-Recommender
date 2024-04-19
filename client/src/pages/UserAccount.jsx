@@ -6,6 +6,9 @@ import useDropDown from "../components/UseDropDown";
 import check from '../icon_pics/check.png';
 import popcorn from '../icon_pics/popcorn_icon.png';
 import movie_ticket from '../user-acct-pics/movie-ticket.png';
+import romance from '../user-acct-pics/romance.png';
+import moviestar from '../user-acct-pics/movie_star.png';
+
 
 const UserAccount = () => {
     const { user_id } = useParams();
@@ -114,11 +117,10 @@ const UserAccount = () => {
 
             <div id="account-content" class="acct-container">
 
-                <h2 className="heading-with-image">
+                <h2 className="completed-heading-with-image">
                     Completed
                     <img src={require("../user-acct-pics/stars.png")} alt="stars" className="image" />
                 </h2>
-
 
                 <section id="acctmovie-container">
 
@@ -159,7 +161,7 @@ const UserAccount = () => {
                 </section>
 
 
-                <h2 className="heading-with-image">
+                <h2 className="plan-heading-with-image">
                     Plan to Watch
                     <img src={require("../user-acct-pics/3d-glasses.png")} alt="3d-glasses" className="image" />
                 </h2>
@@ -205,10 +207,11 @@ const UserAccount = () => {
 
 
                 <section id="movie-prefs" class="acct-container">
-                   
-                    <div id="fav-title">
+
+                    <div className="fav-title">
                         <h2>Favorite Genres</h2>
                         <div id="fav_genres" class="fav-container">
+                            <img src={romance} alt="heart with reel" className="romance" />
                             <ul className="genreList">
                                 {fav_genres.map((genre) => (
                                     <li className="genre" key={genre.genre_id}>{genre.genre_name}</li>
@@ -217,7 +220,7 @@ const UserAccount = () => {
                         </div>
                     </div>
 
-                    <div id="fav-title">
+                    <div className="fav-title">
                         <h2>Favorite Actors</h2>
                         <div id="fav_actors" class="fav-container">
                             <ul className="actorList">
@@ -225,6 +228,8 @@ const UserAccount = () => {
                                     <li className="actor" key={actor.actor_id}>{actor.actor_name}</li>
                                 ))}
                             </ul>
+                            <img src={moviestar} alt="fabulous movie star" className="movie-star" />
+
                         </div>
                     </div>
 

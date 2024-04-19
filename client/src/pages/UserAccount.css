@@ -150,13 +150,12 @@
 
 h2 {
     color: rgb(255, 190, 64);
-    margin: 0;
 }
 
 #acctmovie-container {
     flex-direction: column;
     background-color: #3E2750;
-    padding: 80px;
+    padding: 90px;
     border-radius: 15px;
 }
 
@@ -328,14 +327,19 @@ h2 {
 
 .dropdown-content a:hover {background-color: #f1f1f1}
 
-.heading-with-image {
+.plan-heading-with-image {
+    display: flex;
+    align-items: center; 
+}
+
+.completed-heading-with-image {
     display: flex;
     align-items: center; 
 }
 
 .image {
     margin-right: 10px; 
-    width: 50px; 
+    width: 100px; 
     height: auto; 
 }
 
@@ -365,7 +369,36 @@ h2 {
     border-radius: 5px; 
 }
 
+.fav-title {
+    width: 45%; /* Set the width to 40% */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
 
+#fav_genres,
+#fav_actors {
+    background-color: goldenrod;
+    padding: 20px; /* Add padding inside the sections */
+    width: 80%;
+    margin-bottom: 10px;
+    position: relative; 
+}
+
+
+#fav_genres .romance {
+    position: absolute; /* Set the position of the image to absolute */
+    top: -30px; /* Position the image at the top */
+    right: -20px; /* Position the image at the right */
+    width: 100px; /* Adjust the width of the image as needed */
+    height: auto; /* Maintain aspect ratio */
+}
+
+#fav_actors .movie-star {
+    position: absolute; /* Set the position of the image to absolute */
+    bottom: 0; /* Position the image at the top */
+    right: 0; /* Position the image at the right */
+    width: 120px; /* Adjust the width of the image as needed */
+    height: auto; /* Maintain aspect ratio */
+}
 
 
 
