@@ -43,14 +43,14 @@ app.get("/", (req, res)=>{
     res.json("hello this is the backend")
 })
 
-// app.get("/movie", (req,res)=>{
-//     const q = "SHOW TABLES;"
-//     db.query(q,(err,data)=>{
-//         if(err) return res.json(err)
-//         return res.json(data)
-//     })
+app.get("/movie", (req,res)=>{
+    const q = "SHOW TABLES;"
+    db.query(q,(err,data)=>{
+        if(err) return res.json(err)
+        return res.json(data)
+    })
 
-// })
+})
 
 app.post('/createAccount', (req,res) => {
     const { full_name, age, email, password } = req.body;
@@ -246,7 +246,7 @@ app.get("/watch_list/:user_id", async (req, res) => {
     try{
     const q = 
         `
-        SELECT wl.watch_list_id, m.title FROM watch_list wl
+        SELECT m.title FROM watch_list wl
         JOIN movie m
         WHERE wl.user_id = ?
         AND m.movie_id = wl.movie_id;
@@ -264,23 +264,27 @@ app.get("/watch_list/:user_id", async (req, res) => {
     }
 });
 
-app.post("/submitToList", async (req, res)=>{
+app.post("/submitToList"), async (req, res)=>{
     if(!promiseDb){
         console.log("Not connected to promiseDb");
     }
     console.log("Submitting movie selection");
     console.log("Received movie selection:", req.body);
-    //console.log("Add List Entry, Parameters: ", [user_id, movie_id]);
+
+    try{
+        
+
+    }catch(err){
+
+    }
+}
+
+async function insertMovieToList(user_id, movie_id){
+    console.log("Add List Entry, Parameters: ", [user_id, movie_id]);
     const insertToList = `
         INSERT INTO watch_list (user_id, movie_id)
-        VALUES (?, ?);
+        VALUES (?, ?)
     `;
-    const values = [
-        req.body.user_id,
-        req.body.movie_id
-    ];
-
-    console.log("vals: " + values);
     try{
         const result = await promiseDb.query(insertToList, values);
         const watchList_id = result;
@@ -341,7 +345,7 @@ async function deleteWatchListById(wl_id){
 async function deleteMovieFromList(user_id, movie_id){
     console.log("Del List Entry, Parameters: ", [user_id, movie_id]);
     const deleteFromList =`
-        DELETE FROM watch_list WHERE user_id=? AND movie_id=?;
+        DELETE FROM watch_list WHERE user_id=? AND movie_id=?
     `;
     try{
         db.query(deleteMovieFromList, [user_id, movie_id]);
@@ -493,7 +497,7 @@ app.post("/submitQuiz", async (req,res)=>{
 app.get("/movie_db", (req,res)=>{
     const query = "SHOW TABLES;";
     db.query(query,(err, data)=>{
-        if(err) return res.json(err)
+        if(err) returnres.json(err)
         return res.json(data)
     })
 });
@@ -501,7 +505,7 @@ app.get("/movie_db", (req,res)=>{
 app.get("/movie", (req,res)=>{
     const query = "SELECT * FROM movie;";
     db.query(query,(err, data)=>{
-        if(err) return res.json(err)
+        if(err) returnres.json(err)
         return res.json(data)
     })
 });

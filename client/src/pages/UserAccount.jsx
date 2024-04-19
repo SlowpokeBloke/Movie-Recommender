@@ -15,7 +15,8 @@ const UserAccount = () => {
     const [fav_actors, setActors] = useState([]);
 
     const [profile, setProfile] = useState([]);
-
+  
+    useEffect(() => {
     const movieDropDown = useDropDown();
     const [searchInput, setSearchInput] = useState("");
     const [filteredMovies, setFilteredMovies] = useState([]);
@@ -81,24 +82,19 @@ const UserAccount = () => {
         fetchWatchList();
     },[user_id]);
 
-    const handleSearchInputChange = (event) => {setSearchInput(event.target.value);};
+    const handleSearchInputChange = (event) => { setSearchInput(event.target.value); };
+    //const handleItemSelect = (dropdownList, value) => dropdownList.selectList(value);
     useEffect(() => {
         const filtered = movies.filter(movie =>
             movie.title.toLowerCase().includes(searchInput.toLowerCase())
         ).slice(0, 10);
         setFilteredMovies(filtered);
     }, [searchInput, movies]);
-    const handleMovieSelect = async (movie_id, title) => {
-        var newSelection=false;
-        console.log("movie id: " + movie_id);
+    const handleMovieSelect = (movie_id, title) => {
         setSelectedMovies(currSelectedMovies => {
             if (currSelectedMovies.includes(movie_id)) {
-                newSelection=false;
-                console.log("inside filter;expected false: "+newSelection)
                 return currSelectedMovies.filter(id => id !== movie_id);
             } else {
-                newSelection=true;
-                console.log("inside filter;expected true: "+newSelection)
                 return [...currSelectedMovies, movie_id];
             }
         });
@@ -134,7 +130,9 @@ const UserAccount = () => {
         console.log("refreshing on del");
         window.location.reload();
     };
+    // useEffect(() => {
 
+    // })
     return (
         <div id="account-container">
             <div id="profile-container" class="acct-container">
@@ -204,6 +202,7 @@ const UserAccount = () => {
                                     </li>
                                 ))}
                             </ul>
+
                         </div>
                                 {wlMovies.map((movie)=>(
                                     <div class="movie" key={movie.watch_list_id}>
@@ -212,10 +211,11 @@ const UserAccount = () => {
                                 ))}
                         </div>
                     </section>
-                    <section id="movie-prefs" class="acct-container">
-                        <div id="fav_genres" class="fav-container">
-                            <h3>Favorite Genres</h3>
 
+                <section id="movie-prefs" class="acct-container">
+
+                    <div className="fav-title">
+                        <h2>Favorite Genres</h2>
                             <ul className="genreList">
                                 {fav_genres.map((genre)=>(
                                     <li className="genre" key={genre.genre_id}>{genre.genre_name}</li>
@@ -239,6 +239,7 @@ const UserAccount = () => {
                     </section> */}
                 </section>
             </div>
+        </div>
         </div>
     )
 }
