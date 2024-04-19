@@ -246,7 +246,7 @@ app.get("/watch_list/:user_id", async (req, res) => {
     try{
     const q = 
         `
-        SELECT m.title FROM watch_list wl
+        SELECT wl.watch_list_id, m.title FROM watch_list wl
         JOIN movie m
         WHERE wl.user_id = ?
         AND m.movie_id = wl.movie_id;
@@ -264,24 +264,49 @@ app.get("/watch_list/:user_id", async (req, res) => {
     }
 });
 
-app.post("/submitToList"), async (req, res)=>{
+app.post("/submitToList", async (req, res)=>{
     if(!promiseDb){
         console.log("Not connected to promiseDb");
     }
     console.log("Submitting movie selection");
     console.log("Received movie selection:", req.body);
-    console.log("Add List Entry, Parameters: ", [user_id, movie_id]);
+    //console.log("Add List Entry, Parameters: ", [user_id, movie_id]);
     const insertToList = `
         INSERT INTO watch_list (user_id, movie_id)
-        VALUES (?, ?)
+        VALUES (?, ?);
     `;
+    const values = [
+        req.body.user_id,
+        req.body.movie_id
+    ];
+
+    console.log("vals: " + values);
     try{
-        db.query(insertToList, [user_id, movie_id]);
+        //const result = await promiseDb.query(insertToList, values);
+        //const watchList_id = result;
         console.log("New entry added to Watch List");
+        return res.json({ status: "Success", message: "Movie Selection processed and added to WL", user_id, movie_id});
     }catch(error){
         console.error("Failed to insert entry into Watch List");
+        return res.status(500).json({ status: "Error", message: "Failed to add to list" });
     }
-}
+});
+app.post("/deleteFromList", async (req, res) => 
+    {
+        //console.log("Del List Entry, Parameters: ", [req.body.watch_list_id]);
+        const deleteFromList =`
+            DELETE FROM watch_list WHERE watch_list_id=?;
+        `;
+        const values = [req.body.watch_list_id];
+        console.log("del vals: " + values);
+        try{
+            db.query(deleteFromList, values);
+            console.log("Deleted watchlist entry");
+        }catch(error){
+            console.error("Failed to delete Watch List entry");
+        }
+    }
+);
 
 // async function insertMovieToList(user_id, movie_id){
 //     console.log("Add List Entry, Parameters: ", [user_id, movie_id]);
@@ -297,10 +322,23 @@ app.post("/submitToList"), async (req, res)=>{
 //     }
 // }
 
+async function deleteWatchListById(wl_id){
+    console.log("Del List Entry, Parameters: ", [wl_id]);
+    const deleteFromList =`
+        DELETE FROM watch_list WHERE watch_list_id=?;
+    `;
+    try{
+        db.query(deleteMovieFromList, [wl_id]);
+        console.log("Deleted watchlist entry");
+    }catch(error){
+        console.error("Failed to delete Watch List entry");
+    }
+}
+
 async function deleteMovieFromList(user_id, movie_id){
     console.log("Del List Entry, Parameters: ", [user_id, movie_id]);
     const deleteFromList =`
-        DELETE FROM watch_list WHERE user_id=? AND movie_id=?
+        DELETE FROM watch_list WHERE user_id=? AND movie_id=?;
     `;
     try{
         db.query(deleteMovieFromList, [user_id, movie_id]);
