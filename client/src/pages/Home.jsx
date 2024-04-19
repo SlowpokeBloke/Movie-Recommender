@@ -25,7 +25,7 @@ const Home = () => {
 
             < div className="row">
                 <div className="greeting">
-                    <h1>Find you Reel movie match at ReelMatch in just a few clicks.</h1>
+                    <h1>Find your real movie match at ReelMatch in just a few clicks.</h1>
 
                     <div className="new">
                         <h2>New User?</h2>
