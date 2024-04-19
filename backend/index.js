@@ -62,14 +62,14 @@ app.get("/", (req, res)=>{
     res.json("hello this is the backend")
 })
 
-app.get("/movie", (req,res)=>{
-    const q = "SHOW TABLES;"
-    db.query(q,(err,data)=>{
-        if(err) return res.json(err)
-        return res.json(data)
-    })
+// app.get("/movie", (req,res)=>{
+//     const q = "SHOW TABLES;"
+//     db.query(q,(err,data)=>{
+//         if(err) return res.json(err)
+//         return res.json(data)
+//     })
 
-})
+// })
 
 app.post('/createAccount', (req,res) => {
     const { full_name, age, email, password } = req.body;
@@ -287,16 +287,6 @@ app.post("/submitToList"), async (req, res)=>{
     }
     console.log("Submitting movie selection");
     console.log("Received movie selection:", req.body);
-
-    try{
-        
-
-    }catch(err){
-
-    }
-}
-
-async function insertMovieToList(user_id, movie_id){
     console.log("Add List Entry, Parameters: ", [user_id, movie_id]);
     const insertToList = `
         INSERT INTO watch_list (user_id, movie_id)
@@ -309,6 +299,20 @@ async function insertMovieToList(user_id, movie_id){
         console.error("Failed to insert entry into Watch List");
     }
 }
+
+// async function insertMovieToList(user_id, movie_id){
+//     console.log("Add List Entry, Parameters: ", [user_id, movie_id]);
+//     const insertToList = `
+//         INSERT INTO watch_list (user_id, movie_id)
+//         VALUES (?, ?)
+//     `;
+//     try{
+//         db.query(insertToList, [user_id, movie_id]);
+//         console.log("New entry added to Watch List");
+//     }catch(error){
+//         console.error("Failed to insert entry into Watch List");
+//     }
+// }
 
 async function deleteMovieFromList(user_id, movie_id){
     console.log("Del List Entry, Parameters: ", [user_id, movie_id]);
@@ -465,7 +469,7 @@ app.post("/submitQuiz", async (req,res)=>{
 app.get("/movie_db", (req,res)=>{
     const query = "SHOW TABLES;";
     db.query(query,(err, data)=>{
-        if(err) returnres.json(err)
+        if(err) return res.json(err)
         return res.json(data)
     })
 });
@@ -473,7 +477,7 @@ app.get("/movie_db", (req,res)=>{
 app.get("/movie", (req,res)=>{
     const query = "SELECT * FROM movie;";
     db.query(query,(err, data)=>{
-        if(err) returnres.json(err)
+        if(err) return res.json(err)
         return res.json(data)
     })
 });

@@ -14,6 +14,20 @@ const UserAccount = () => {
 
     const [profile, setProfile] = useState([]);
     useEffect(()=> {
+        const getMovies = async () => {
+            try {
+                const res = await fetch('http://localhost:8800/movie');
+                if (!res.ok) {
+                    throw new Error('Network error')
+                }
+                const getData = await res.json();
+                setMovies(getData);
+                console.log( getData);
+            } catch (error) {
+                console.error("Couldn't fetch movie: ", error);
+            }
+        };
+        getMovies();
 
         const fetchProfile = async () =>{
             try{
@@ -66,7 +80,7 @@ const UserAccount = () => {
     const [selectedMovies, setSelectedMovies] = useState([]);
 
     const handleSearchInputChange = (event) => {setSearchInput(event.target.value);};
-    //const handleItemSelect = (dropdownList, value) => dropdownList.selectList(value);
+    const handleItemSelect = (dropdownList, value) => dropdownList.selectList(value);
     useEffect(() => {
         const filtered = movies.filter(movie =>
             movie.title.toLowerCase().includes(searchInput.toLowerCase())
@@ -74,10 +88,19 @@ const UserAccount = () => {
         setFilteredMovies(filtered);
     }, [searchInput, movies]);
     const handleMovieSelect = (movie_id, title) => {
-        setSelectedMovies(currSelectedMovies => {
+        setSelectedMovies(async currSelectedMovies => {
             if (currSelectedMovies.includes(movie_id)) {
                 return currSelectedMovies.filter(id => id !== movie_id);
             } else {
+                // const dataToSubmit = {
+                //     user_id: user_id,
+                //     movie_id: movie_id,
+                // }
+                // try {
+                //     const response = await axios.post('http://localhost:8800/submitToList', dataToSubmit);
+                // } catch (err) {
+                //     console.log(err);
+                // }
                 return [...currSelectedMovies, movie_id];
             }
         });
