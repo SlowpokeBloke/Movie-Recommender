@@ -26,26 +26,7 @@ const db = mysql.createConnection({
     password: "Lele123!",
     database: "movie_recommender"
 });
-// let promiseDb;
-//     createConnection({
-//         host: "localhost", 
-//         host: "localhost",
-//         user: "root",
-//         password: "Lele123!",
-//         database: "movie_recommender"
-//     }).then(db => {
-//         promiseDb = db;
-//         console.log("Promise-based database connection established.");
-//     }).catch(err => {
-//         console.error("Error establishing promise-based database connection:", err);
-//     });
 
-// const db = mysql.createConnection({
-//     host: "localhost", 
-//     user: "root",
-//     password: "Lele123!",
-//     database: "movie_recommender"
-// });
 
 db.connect((err) => {
     if (err) {
@@ -176,16 +157,18 @@ app.get("/p/:user_id", async (req, res) => {
         SELECT p.full_name, p.age FROM person p
         WHERE p.user_id = ?;
         `;
-        const nm = await promiseDb.query(q,[user_id]);
-        //const nm = await promiseDb.query(q);
-        if(nm===""){
-            return res.json({error: "No name found"});
+        // data is within an array to extract the first result
+        const [result] = await promiseDb.query(q,[user_id]);
+        if (result.length === 0) {
+            return res.json({ error: "No name found" });
         }
-        console.log(nm);
-        return res.json(nm);
-    }catch(err){
+        //check result
+        console.log(result);
+        //returning the first result only
+        return res.json(result[0]); 
+    } catch (err) {
         console.error(err);
-        return res.json(err);
+        return res.json({ error: err.message });
     }
 });
 
