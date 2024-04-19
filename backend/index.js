@@ -282,10 +282,10 @@ app.post("/submitToList", async (req, res)=>{
 
     console.log("vals: " + values);
     try{
-        //const result = await promiseDb.query(insertToList, values);
-        //const watchList_id = result;
+        const result = await promiseDb.query(insertToList, values);
+        const watchList_id = result;
         console.log("New entry added to Watch List");
-        return res.json({ status: "Success", message: "Movie Selection processed and added to WL", user_id, movie_id});
+        return res.json({ status: "Success", message: "Movie Selection processed and added to WL", values});
     }catch(error){
         console.error("Failed to insert entry into Watch List");
         return res.status(500).json({ status: "Error", message: "Failed to add to list" });
@@ -302,8 +302,11 @@ app.post("/deleteFromList", async (req, res) =>
         try{
             db.query(deleteFromList, values);
             console.log("Deleted watchlist entry");
+            return res.json({ status: "Success", message: "Movie Selection processed and deleted from WL", values});
+
         }catch(error){
             console.error("Failed to delete Watch List entry");
+            return res.status(500).json({ status: "Error", message: "Failed to delete from list" });
         }
     }
 );

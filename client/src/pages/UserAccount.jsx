@@ -116,6 +116,7 @@ const UserAccount = () => {
             } catch (err) {
                 console.log(err);
             }
+            window.location.reload();
         // }
     };
     const handleWLDelete = async (watch_list_id) => {
@@ -130,6 +131,8 @@ const UserAccount = () => {
         } catch (err) {
             console.log(err);
         }
+        console.log("refreshing on del");
+        window.location.reload();
     };
 
     return (
