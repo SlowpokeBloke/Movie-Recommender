@@ -16,7 +16,6 @@ const UserAccount = () => {
 
     const [profile, setProfile] = useState([]);
   
-    useEffect(() => {
     const movieDropDown = useDropDown();
     const [searchInput, setSearchInput] = useState("");
     const [filteredMovies, setFilteredMovies] = useState([]);
@@ -90,7 +89,7 @@ const UserAccount = () => {
         ).slice(0, 10);
         setFilteredMovies(filtered);
     }, [searchInput, movies]);
-    const handleMovieSelect = (movie_id, title) => {
+    const handleMovieSelect = async (movie_id, title) => {
         setSelectedMovies(currSelectedMovies => {
             if (currSelectedMovies.includes(movie_id)) {
                 return currSelectedMovies.filter(id => id !== movie_id);
@@ -214,7 +213,7 @@ const UserAccount = () => {
 
                 <section id="movie-prefs" class="acct-container">
 
-                    <div className="fav-title">
+                    <div className="fav-title" class="fav-container">
                         <h2>Favorite Genres</h2>
                             <ul className="genreList">
                                 {fav_genres.map((genre)=>(
@@ -239,7 +238,6 @@ const UserAccount = () => {
                     </section> */}
                 </section>
             </div>
-        </div>
         </div>
     )
 }
