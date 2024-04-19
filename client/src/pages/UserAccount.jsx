@@ -91,7 +91,7 @@ const UserAccount = () => {
 
     // })
     return (
-
+        <div>
         <div id="account-container">
             <div id="profile-container" class="acct-container">
                 <div className="default-icon-user">
@@ -129,6 +129,7 @@ const UserAccount = () => {
                             <p>No movies favorited!</p>
                         </div> */}
                     <div class="dropdown">
+                        <div className="features">
                         <input
                             type="text"
                             className="search-bar"
@@ -136,8 +137,11 @@ const UserAccount = () => {
                             value={searchInput}
                             onChange={handleSearchInputChange}
                         />
+                        <div  className="basic-buttons">
                         <button className="add-button">Add</button>
                         <button className="delete-button">Delete</button>
+                        </div>
+                        </div>
                         {/* Display filtered actors */}
                         {searchInput && (
                             <ul className="movie-list">
@@ -181,8 +185,10 @@ const UserAccount = () => {
                             value={searchInput}
                             onChange={handleSearchInputChange}
                         />
+                        <div className="basic-buttons">
                         <button className="add-button">Add</button>
                         <button className="delete-button">Delete</button>
+                        </div>
                         {/* Display filtered actors */}
                         {searchInput && (
                             <ul className="movie-list">
@@ -238,6 +244,7 @@ const UserAccount = () => {
 
 
             </div>
+        </div>
         </div>
     )
 }
