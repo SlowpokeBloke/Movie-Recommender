@@ -1,9 +1,4 @@
-/* h2, h3 {
-    color: black;
-    margin: 10px;
-} */
-
-  /* cyrillic-ext */
+/* cyrillic-ext */
 @font-face {
   font-family: 'PT Sans';
   font-style: italic;
@@ -147,6 +142,24 @@
   src: url(https://fonts.gstatic.com/s/ptsans/v17/jizfRExUiTo99u79B_mh0O6tLQ.woff2) format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
+
+.body {
+    background-color: #1a1224;
+}
+
+h2 {
+    color: rgb(255, 190, 64);
+    margin: 0;
+}
+
+#acctmovie-container {
+    flex-direction: column;
+    background-color: #3E2750;
+    padding: 80px;
+    border-radius: 15px;
+}
+
 #account-container {
     display: flex;
     flex-direction: row;
@@ -157,17 +170,18 @@
 .acct-container {
     display: flex;
     background-color: #3E2750;
-    border-radius: 5px;
+    border-radius: 15px;
     margin: 15px;
 }
 
 #profile-container{
     flex-direction: column;
-    width: 33%;
+    width: 35%;
     padding: 15px;
     justify-content: center;
     align-items: center;
 }
+
 .pName{
   margin-top: 10px;
   font-size: 30px;
@@ -199,6 +213,7 @@
   font-weight: lighter;
   font-size: 20px;
 }
+
 #profile {
     margin-top: 15px;
     background-color: #A0A0D1;
@@ -208,6 +223,7 @@
     padding: 15px;
     text-align: center;
 }
+
 .default-icon-user{
   position:relative;
   top: 0;
@@ -226,21 +242,12 @@
   right:20px;
   width:100px;
 }
+
 #account-content {
     flex-direction: column;
     justify-content: space-between;
     width: 66%;
-}
-
-#acctmovie-container {
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-#list-section {
-    flex-direction: column;
-    padding: 5px;
-    margin: 5px;
+    background-color: #1a1224;
 }
 
 .list-container {
@@ -251,21 +258,21 @@
 }
 
 #movie-prefs {
+    display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    background-color: #1a1224;
 }
+
 
 .fav-container {
     background-color: goldenrod;
-    padding: 5px;
+    padding: 100px;
+    width: 100%;
+    margin-bottom: 10px;
 }
-/* #recommender {
-    display: flex;
-    flex-direction: column;
-    margin-top: 50%;
-} */
 
-/* Dropdown Button */
 .dropbtn {
     background-color: #3E2750;
     border: none;
@@ -280,15 +287,14 @@
     font-family: "PT Sans", sans-serif;
     font-weight: 700;
     font-style: normal;
-  }
-  
+}
+
 .dropbtn:hover, .dropbtn:focus {
     background-color: #2A133F;
     color:rgb(228, 196, 54);
-  }
-  
-  /* The search field */
-  #myInput {
+}
+
+#myInput {
     box-sizing: border-box;
     background-position: 14px 12px;
     background-repeat: no-repeat;
@@ -296,41 +302,70 @@
     padding: 14px 20px 12px 45px;
     border: none;
     border-bottom: 1px solid #ddd;
-  }
-  
-  /* The search field when it gets focus/clicked on */
-  #myInput:focus {outline: 3px solid #ddd;}
-  
-  /* The container <div> - needed to position the dropdown content */
-  .dropdown {
+}
+
+#myInput:focus {outline: 3px solid #ddd;}
+
+.dropdown {
     position: relative;
     display: inline-block;
-  }
-  
-  /* Dropdown Content (Hidden by Default) */
-  .dropdown-content {
-    /* display: none; */
+}
+
+.dropdown-content {
     position: absolute;
     background-color: #f6f6f6;
     min-width: 230px;
     border: 1px solid #ddd;
     z-index: 1;
-  }
-  
-  /* Links inside the dropdown */
-  .dropdown-content a {
+}
+
+.dropdown-content a {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
-  }
-  
-  /* Change color of dropdown links on hover */
-  .dropdown-content a:hover {background-color: #f1f1f1}
-  
-  /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-  .show {display:block;}
+}
 
-  ul{
-    list-style-type: none;
-  }
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.heading-with-image {
+    display: flex;
+    align-items: center; 
+}
+
+.image {
+    margin-right: 10px; 
+    width: 50px; 
+    height: auto; 
+}
+
+#movie-prefs ul {
+    list-style-type: none; 
+}
+
+#movie-prefs li {
+    padding-left: 20px; 
+}
+
+#movie-prefs li:before {
+    content: ""; 
+    display: inline-block;
+    width: 16px; 
+    height: 16px; 
+    background: url('../user-acct-pics/black_star.png') no-repeat; 
+    background-size: contain; 
+    margin-right: 10px; 
+}
+
+.search-bar {
+    background-color: #5c5c9a; 
+    border: none; 
+    color: #a0a0d1; 
+    padding: 10px; 
+    border-radius: 5px; 
+}
+
+
+
+
+
