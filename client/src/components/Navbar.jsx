@@ -11,7 +11,7 @@ export const Navbar = () => {
 
     return (
         <nav>
-            <Link to="/" className='title'>Movie Recommender</Link>
+            <Link to="/" className='title'>ReelMatch</Link>
             <div className='menu' onClick={() => {
                 setMenuOpen(!menuOpen);
             }}>
