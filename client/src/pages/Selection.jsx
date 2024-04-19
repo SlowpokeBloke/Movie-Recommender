@@ -126,7 +126,7 @@ const Selection = () => {
                                    </div>
 
                                    <div className="selection-buttons">
-                                        <div><button className="quiz-again-button" onClick={handleQuizAgainClick} >Take Quiz Agian</button></div>
+                                        <div><button className="quiz-again-button" onClick={handleQuizAgainClick} >Take Quiz Again</button></div>
                                         <div><button className="go-to-acct-button" onClick={handleGoToAccountClick} >Account Page</button></div>
                                    </div>
 
