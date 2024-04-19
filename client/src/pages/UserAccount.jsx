@@ -9,7 +9,8 @@ import movie_ticket from '../user-acct-pics/movie-ticket.png';
 
 const UserAccount = () => {
     const {user_id} = useParams();
-    const [movies, setWatchList] = useState([]);
+    const [movies, setMovies] = useState([]);
+    const [wlMovies, setWatchList] = useState([]);
     const [fav_genres, setGenres] = useState([]);
     const [fav_actors, setActors] = useState([]);
 
@@ -68,6 +69,12 @@ const UserAccount = () => {
 
     const handleSearchInputChange = (event) => {setSearchInput(event.target.value);};
     //const handleItemSelect = (dropdownList, value) => dropdownList.selectList(value);
+    useEffect(() => {
+        const filtered = movies.filter(movie =>
+            movie.title.toLowerCase().includes(searchInput.toLowerCase())
+        ).slice(0, 10);
+        setFilteredMovies(filtered);
+    }, [searchInput, movies]);
     const handleMovieSelect = (movie_id, title) => {
         setSelectedMovies(currSelectedMovies => {
             if (currSelectedMovies.includes(movie_id)) {
@@ -80,7 +87,6 @@ const UserAccount = () => {
     // useEffect(() => {
 
     // })
-    
     return (
         <div id="account-container">
             <div id="profile-container" class="acct-container">
@@ -114,7 +120,7 @@ const UserAccount = () => {
                         <div id="towatch-list" class="list-container">
                             <h3>Your Movie Watchlist</h3>
                             <div class="dropdown">
-                                {/* <button onclick="myFunction()" class="dropbtn">Add a Movie to your Watchlist</button> */}
+                                {/* <button onclick={movieDropDown.toggleList}class="dropbtn">Add a Movie</button> */}
                                 <input
                                 type="text"
                                 className="search-bar"
@@ -122,7 +128,7 @@ const UserAccount = () => {
                                 value={searchInput}
                                 onChange={handleSearchInputChange}
                             />
-                            {/* Display filtered actors */}
+                            {/* Display filtered movies */}
                             {searchInput && (
                                 <ul className="movie-list">
                                     {filteredMovies.slice(0, 10).map((movie) => (
@@ -142,9 +148,18 @@ const UserAccount = () => {
                         </div>
 
                             {/* <p>No movies planned to watch!</p> */}
-                                {movies.map((movie)=>(
+                            <div className="selected-movies">
+                            <ul className="selected-movies-list">
+                                {selectedMovies.map((movie_id) => (
+                                    <li key={movie_id} className="selected-movie-item">
+                                        {movies.find((movie) => movie.movie_id === movie_id)?.title}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                                {wlMovies.map((movie)=>(
                                     <div class="movie" key={movie.movie_id}>
-                                        <p>{movie.title} <button>Del</button></p>
+                                        <p>{movie.title} <button onClick={null}>Del</button></p>
                                     </div>
                                 ))}
                         </div>
