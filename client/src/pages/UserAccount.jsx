@@ -6,26 +6,42 @@ import useDropDown from "../components/UseDropDown";
 import check from '../icon_pics/check.png';
 import popcorn from '../icon_pics/popcorn_icon.png';
 import movie_ticket from '../user-acct-pics/movie-ticket.png';
-import romance from '../user-acct-pics/romance.png';
-import moviestar from '../user-acct-pics/movie_star.png';
-
 
 const UserAccount = () => {
-    const { user_id } = useParams();
+    const {user_id} = useParams();
     const [movies, setMovies] = useState([]);
     const [wlMovies, setWatchList] = useState([]);
     const [fav_genres, setGenres] = useState([]);
     const [fav_actors, setActors] = useState([]);
 
     const [profile, setProfile] = useState([]);
-    useEffect(()=> {
 
-        const fetchProfile = async () => {
+    const movieDropDown = useDropDown();
+    const [searchInput, setSearchInput] = useState("");
+    const [filteredMovies, setFilteredMovies] = useState([]);
+    const [selectedMovies, setSelectedMovies] = useState([]);
+    useEffect(()=> {
+        const getMovies = async () => {
             try {
+                const res = await fetch('http://localhost:8800/movie');
+                if (!res.ok) {
+                    throw new Error('Network error')
+                }
+                const getData = await res.json();
+                setMovies(getData);
+                console.log( getData);
+            } catch (error) {
+                console.error("Couldn't fetch movie: ", error);
+            }
+        };
+        getMovies();
+
+        const fetchProfile = async () =>{
+            try{
                 const res = await axios.get(`http://localhost:8800/p/${user_id}`);
                 setProfile([res.data]);
                 console.log(res.data);
-            } catch (err) {
+            }catch(err){
                 console.log("Failed to fetch profile info\nerror message: " + err);
             }
         }
@@ -33,42 +49,37 @@ const UserAccount = () => {
         console.log(profile.full_name);
         console.log(profile.age);
         //fetches favorite genres for list
-        const fetchFavGenres = async () => {
-            try {
+        const fetchFavGenres = async ()=>{
+            try{
                 const res = await axios.get(`http://localhost:8800/fav_genres/${user_id}`)
                 setGenres(res.data);
-            } catch (err) {
+            }catch(err){
                 console.log("Failed to fetch fav genres\nerror message:" + err);
             }
         }
         fetchFavGenres();
         //fetches favorite actors for list
-        const fetchFavActors = async () => {
-            try {
+        const fetchFavActors = async ()=> {
+            try{
                 const res = await axios.get(`http://localhost:8800/fav_actors/${user_id}`)
                 setActors(res.data);
-            } catch (err) {
+            }catch(err){
                 console.log("Failed to fetch fav actors\nerror message: " + err);
             }
         }
         fetchFavActors();
 
-        const fetchWatchList = async () => {
-            try {
+        const fetchWatchList = async ()=>{
+            try{
                 const res = await axios.get(`http://localhost:8800/watch_list/${user_id}`)
                 setWatchList(res.data);
 
-            } catch (err) {
+            }catch(err){
                 console.log("Failed to fetch watchlist\nerror message: " + err);
             }
         }
         fetchWatchList();
-    }, [user_id]);
-
-    const movieDropDown = useDropDown();
-    const [searchInput, setSearchInput] = useState("");
-    const [filteredMovies, setFilteredMovies] = useState([]);
-    const [selectedMovies, setSelectedMovies] = useState([]);
+    },[user_id]);
 
     const handleSearchInputChange = (event) => {setSearchInput(event.target.value);};
     useEffect(() => {
@@ -122,162 +133,108 @@ const UserAccount = () => {
     };
 
     return (
-        <div>
         <div id="account-container">
             <div id="profile-container" class="acct-container">
-                <div className="default-icon-user">
+                <div className= "default-icon-user">
                     <img className="cute-popcorn" src={popcorn} alt="popcorn"></img>
                     <img className="movie-ticket" src={movie_ticket} alt="movie-ticket"></img>
                 </div>
                 <section id="profile">
-
-                    {profile.map((person) => (
+                    
+                    {profile.map((person)=>(
                         <section className="profile-info" key={person.user_id}>
                             <div className="pName">{person.full_name}</div>
                             <div className="pAge">{person.age}</div>
                             <div className="reel-mood">Reel Mood
-                                <div className="type-mood">
-                                    <input className="input-mood" placeholder="Type your status"></input>
-                                </div>
+                            <div className="type-mood">
+                                <input className = "input-mood"placeholder="Type your status"></input>
+                            </div>
                             </div>
                         </section>
                     ))}
                     {/* <h2>Hello, {profile.full_name}!</h2> */}
                 </section>
             </div>
-
             <div id="account-content" class="acct-container">
-
-                <h2 className="completed-heading-with-image">
-                    Completed
-                    <img src={require("../user-acct-pics/stars.png")} alt="stars" className="image" />
-                </h2>
-
-                <section id="acctmovie-container">
-
-                    {/* <div id="favorite-list" class="list-container">
+                <section id="acctmovie-container" class="acct-container">
+                    <section id="list-section">
+                        {/* <div id="favorite-list" class="list-container">
                             <h3>Your Favorite Movies</h3>
                             <p>No movies favorited!</p>
                         </div> */}
-                    <div class="dropdown">
-                        <div className="features">
-                        <input
-                            type="text"
-                            className="search-bar"
-                            placeholder="Type your movies..."
-                            value={searchInput}
-                            onChange={handleSearchInputChange}
-                        />
-                        <div  className="basic-buttons">
-                        <button className="add-button">Add</button>
-                        <button className="delete-button">Delete</button>
+                        <div id="towatch-list" class="list-container">
+                            <h3>Your Movie Watchlist</h3>
+                            <div class="dropdown">
+                                {/* <button onclick={movieDropDown.toggleList}class="dropbtn">Add a Movie</button> */}
+                                <input
+                                type="text"
+                                className="search-bar"
+                                placeholder="Search Movies..."
+                                value={searchInput}
+                                onChange={handleSearchInputChange}
+                            />
+                            {/* Display filtered movies */}
+                            {searchInput && (
+                                <ul className="movie-list">
+                                    {filteredMovies.slice(0, 10).map((movie) => (
+                                        <li
+                                            key={movie.movie_id}
+                                            className={`movie-item ${selectedMovies.includes(movie.movie_id) ? 'selected' : ''}`}
+                                            onClick={() => handleMovieSelect(movie.movie_id)}
+                                        >
+                                            <span className={`check-pic ${selectedMovies.includes(movie.movie_id) ? '' : 'check-pic-hidden'}`}>
+                                                <img src={check} alt="Check" width="10" height="10" />
+                                            </span>
+                                            <span className="movie-item-text">{movie.title}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
-                        </div>
-                        {/* Display filtered actors */}
-                        {searchInput && (
-                            <ul className="movie-list">
-                                {filteredMovies.slice(0, 10).map((movie) => (
-                                    <li
-                                        key={movie.movie_id}
-                                        className={`movie-item ${selectedMovies.includes(movie.movie_id) ? 'selected' : ''}`}
-                                        onClick={() => handleMovieSelect(movie.movie_id)}
-                                    >
-                                        <span className={`check-pic ${selectedMovies.includes(movie.movie_id) ? '' : 'check-pic-hidden'}`}>
-                                            <img src={check} alt="Check" width="10" height="10" />
-                                        </span>
-                                        <span className="movie-item-text">{movie.title}</span>
+
+                            {/* <p>No movies planned to watch!</p> */}
+                            <div className="selected-movies">
+                            <ul className="selected-movies-list">
+                                {selectedMovies.map((movie_id) => (
+                                    <li key={movie_id} className="selected-movie-item">
+                                        {movies.find((movie) => movie.movie_id === movie_id)?.title}
                                     </li>
                                 ))}
                             </ul>
-                        )}
-                    </div>
-
-
-                </section>
-
-
-                <h2 className="plan-heading-with-image">
-                    Plan to Watch
-                    <img src={require("../user-acct-pics/3d-glasses.png")} alt="3d-glasses" className="image" />
-                </h2>
-
-
-                <section id="acctmovie-container">
-
-                    {/* <div id="favorite-list" class="list-container">
-                            <h3>Your Favorite Movies</h3>
-                            <p>No movies favorited!</p>
-                        </div> */}
-                    <div class="dropdown">
-                        <input
-                            type="text"
-                            className="search-bar"
-                            placeholder="Type your movies..."
-                            value={searchInput}
-                            onChange={handleSearchInputChange}
-                        />
-                        <div className="basic-buttons">
-                        <button className="add-button">Add</button>
-                        <button className="delete-button">Delete</button>
                         </div>
-                        {/* Display filtered actors */}
-                        {searchInput && (
-                            <ul className="movie-list">
-                                {filteredMovies.slice(0, 10).map((movie) => (
-                                    <li
-                                        key={movie.movie_id}
-                                        className={`movie-item ${selectedMovies.includes(movie.movie_id) ? 'selected' : ''}`}
-                                        onClick={() => handleMovieSelect(movie.movie_id)}
-                                    >
-                                        <span className={`check-pic ${selectedMovies.includes(movie.movie_id) ? '' : 'check-pic-hidden'}`}>
-                                            <img src={check} alt="Check" width="10" height="10" />
-                                        </span>
-                                        <span className="movie-item-text">{movie.title}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </div>
-
-                </section>
-                        {wlMovies.map((movie)=>(
+                                {wlMovies.map((movie)=>(
                                     <div class="movie" key={movie.watch_list_id}>
                                         <p>{movie.title} <button onClick={() => handleWLDelete(movie.watch_list_id)}>Del</button></p>
                                     </div>
                                 ))}
                         </div>
-
-                <section id="movie-prefs" class="acct-container">
-
-                    <div className="fav-title">
-                        <h2>Favorite Genres</h2>
+                    </section>
+                    <section id="movie-prefs" class="acct-container">
                         <div id="fav_genres" class="fav-container">
-                            <img src={romance} alt="heart with reel" className="romance" />
+                            <h3>Favorite Genres</h3>
+
                             <ul className="genreList">
-                                {fav_genres.map((genre) => (
+                                {fav_genres.map((genre)=>(
                                     <li className="genre" key={genre.genre_id}>{genre.genre_name}</li>
                                 ))}
                             </ul>
-                        </div>
-                    </div>
 
-                    <div className="fav-title">
-                        <h2>Favorite Actors</h2>
+                        </div>
                         <div id="fav_actors" class="fav-container">
+                            <h3>Favorite Actors</h3>
                             <ul className="actorList">
-                                {fav_actors.map((actor) => (
+                                {fav_actors.map((actor)=>(
                                     <li className="actor" key={actor.actor_id}>{actor.actor_name}</li>
                                 ))}
                             </ul>
-                            <img src={moviestar} alt="fabulous movie star" className="movie-star" />
 
                         </div>
-                    </div>
-
-
+                    </section>
+                    {/* <section id="recommender">
+                        Give Me a ReelMatch!
+                        <Link to ="/Quiz"><button>Take Our Quiz!</button></Link>
+                    </section> */}
                 </section>
-
-
             </div>
         </div>
     )

@@ -1,4 +1,9 @@
-/* cyrillic-ext */
+/* h2, h3 {
+    color: black;
+    margin: 10px;
+} */
+
+  /* cyrillic-ext */
 @font-face {
   font-family: 'PT Sans';
   font-style: italic;
@@ -142,23 +147,6 @@
   src: url(https://fonts.gstatic.com/s/ptsans/v17/jizfRExUiTo99u79B_mh0O6tLQ.woff2) format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-
-
-.body {
-    background-color: #1a1224;
-}
-
-h2 {
-    color: rgb(255, 190, 64);
-}
-
-#acctmovie-container {
-    flex-direction: column;
-    background-color: #3E2750;
-    padding: 90px;
-    border-radius: 15px;
-}
-
 #account-container {
     display: flex;
     flex-direction: row;
@@ -169,19 +157,17 @@ h2 {
 .acct-container {
     display: flex;
     background-color: #3E2750;
-    border-radius: 15px;
+    border-radius: 5px;
     margin: 15px;
 }
 
 #profile-container{
     flex-direction: column;
-    width: 35%;
-    height:100vh;
+    width: 33%;
     padding: 15px;
     justify-content: center;
     align-items: center;
 }
-
 .pName{
   margin-top: 10px;
   font-size: 30px;
@@ -213,7 +199,6 @@ h2 {
   font-weight: lighter;
   font-size: 20px;
 }
-
 #profile {
     margin-top: 15px;
     background-color: #A0A0D1;
@@ -223,7 +208,6 @@ h2 {
     padding: 15px;
     text-align: center;
 }
-
 .default-icon-user{
   position:relative;
   top: 0;
@@ -242,12 +226,21 @@ h2 {
   right:20px;
   width:100px;
 }
-
 #account-content {
     flex-direction: column;
     justify-content: space-between;
     width: 66%;
-    background-color: #1a1224;
+}
+
+#acctmovie-container {
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#list-section {
+    flex-direction: column;
+    padding: 5px;
+    margin: 5px;
 }
 
 .list-container {
@@ -258,21 +251,21 @@ h2 {
 }
 
 #movie-prefs {
-    display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    background-color: #1a1224;
+    justify-content: space-evenly;
 }
-
 
 .fav-container {
     background-color: goldenrod;
-    padding: 100px;
-    width: 100%;
-    margin-bottom: 10px;
+    padding: 5px;
 }
+/* #recommender {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50%;
+} */
 
+/* Dropdown Button */
 .dropbtn {
     background-color: #3E2750;
     border: none;
@@ -287,14 +280,15 @@ h2 {
     font-family: "PT Sans", sans-serif;
     font-weight: 700;
     font-style: normal;
-}
-
+  }
+  
 .dropbtn:hover, .dropbtn:focus {
     background-color: #2A133F;
     color:rgb(228, 196, 54);
-}
-
-#myInput {
+  }
+  
+  /* The search field */
+  #myInput {
     box-sizing: border-box;
     background-position: 14px 12px;
     background-repeat: no-repeat;
@@ -302,166 +296,41 @@ h2 {
     padding: 14px 20px 12px 45px;
     border: none;
     border-bottom: 1px solid #ddd;
-}
-
-#myInput:focus {outline: 3px solid #ddd;}
-
-.dropdown {
+  }
+  
+  /* The search field when it gets focus/clicked on */
+  #myInput:focus {outline: 3px solid #ddd;}
+  
+  /* The container <div> - needed to position the dropdown content */
+  .dropdown {
     position: relative;
     display: inline-block;
-}
-
-.dropdown-content {
+  }
+  
+  /* Dropdown Content (Hidden by Default) */
+  .dropdown-content {
+    /* display: none; */
     position: absolute;
     background-color: #f6f6f6;
     min-width: 230px;
     border: 1px solid #ddd;
     z-index: 1;
-}
-
-.dropdown-content a {
+  }
+  
+  /* Links inside the dropdown */
+  .dropdown-content a {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
-}
+  }
+  
+  /* Change color of dropdown links on hover */
+  .dropdown-content a:hover {background-color: #f1f1f1}
+  
+  /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+  .show {display:block;}
 
-.dropdown-content a:hover {background-color: #f1f1f1}
-
-.plan-heading-with-image {
-    display: flex;
-    align-items: center; 
-}
-
-.completed-heading-with-image {
-    display: flex;
-    align-items: center; 
-}
-
-.image {
-    margin-right: 10px; 
-    width: 100px; 
-    height: auto; 
-}
-
-#movie-prefs ul {
-    list-style-type: none; 
-}
-
-#movie-prefs li {
-    padding-left: 20px; 
-}
-
-#movie-prefs li:before {
-    content: ""; 
-    display: inline-block;
-    width: 16px; 
-    height: 16px; 
-    background: url('../user-acct-pics/black_star.png') no-repeat; 
-    background-size: contain; 
-    margin-right: 10px; 
-}
-
-.search-bar {
-    background-color: #5c5c9a; 
-    border: none; 
-    color: #a0a0d1; 
-    padding: 10px; 
-    border-radius: 5px; 
-}
-
-.fav-title {
-    width: 45%; /* Set the width to 40% */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-}
-
-#fav_genres,
-#fav_actors {
-    background-color: goldenrod;
-    padding: 20px; /* Add padding inside the sections */
-    width: 80%;
-    margin-bottom: 10px;
-    position: relative; 
-}
-
-
-#fav_genres .romance {
-    position: absolute; /* Set the position of the image to absolute */
-    top: -30px; /* Position the image at the top */
-    right: -20px; /* Position the image at the right */
-    width: 100px; /* Adjust the width of the image as needed */
-    height: auto; /* Maintain aspect ratio */
-}
-
-#fav_actors .movie-star {
-    position: absolute; /* Set the position of the image to absolute */
-    bottom: 0; /* Position the image at the top */
-    right: 0; /* Position the image at the right */
-    width: 120px; /* Adjust the width of the image as needed */
-    height: auto; /* Maintain aspect ratio */
-}
-
-
-
-.search-bar {
-    background-color: #5c5c9a; 
-    border: none; 
-    color: #a0a0d1; 
-    font-size:20px;
-    font-weight: 600;
-    padding: 10px; 
-    border-radius: 10px; 
-
-}
-.delete-button{
-  background-color: #5c5c9a;
-  padding-top:8px;
-  padding-bottom: 8px;
-  padding-left:20px;
-  padding-right:20px;
-  margin-right:10px;
-  font-weight: bold;
-  color: 1E1E1E;
-  font-size: 20px;
-  border-radius: 25px;
-  border:none;
-  cursor: pointer;
-  transition: opacity 0.15s ;
-}
-.add-button{
-  background-color: #5c5c9a;
-  padding-top:8px;
-  padding-bottom: 8px;
-  padding-left:30px;
-  padding-right:30px;
-  margin-right:10px;
-  font-weight: bold;
-  color: 1E1E1E;
-  font-size: 20px;
-  border-radius: 25px;
-  border: none;
-  cursor:pointer;
-  transition: opacity 0.15s ;
-}
-.add-button:active, .delete-button:active{
-  cursor:pointer;
-  background-color: #1a1224;
-  color: #5c5c9a;
-}
-.add-button:hover, .delete-button:hover{
-  cursor:pointer;
-  opacity: 0.5;
-}
-.basic-buttons{
-  margin-left: 10px;
-  margin-top: 10px;
-  align-items: center;
-  align-content: center;
-}
-.features{
-  align-items: center;
-  align-content: center;
-  vertical-align: middle;
-}
-
-
+  ul{
+    list-style-type: none;
+  }
