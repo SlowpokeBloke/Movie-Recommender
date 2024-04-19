@@ -4,6 +4,8 @@ import { Link, NavLink, useParams } from 'react-router-dom';
 import axios from 'axios';
 import useDropDown from "../components/UseDropDown";
 import check from '../icon_pics/check.png';
+import popcorn from '../icon_pics/popcorn_icon.png';
+import movie_ticket from '../user-acct-pics/movie-ticket.png';
 
 const UserAccount = () => {
     const {user_id} = useParams();
@@ -32,7 +34,7 @@ const UserAccount = () => {
         const fetchProfile = async () =>{
             try{
                 const res = await axios.get(`http://localhost:8800/p/${user_id}`);
-                setProfile(res.data);
+                setProfile([res.data]);
                 console.log(res.data);
             }catch(err){
                 console.log("Failed to fetch profile info\nerror message: " + err);
@@ -105,14 +107,27 @@ const UserAccount = () => {
             }
         });
     };
+    // useEffect(() => {
+
+    // })
     return (
         <div id="account-container">
             <div id="profile-container" class="acct-container">
+                <div className= "default-icon-user">
+                    <img className="cute-popcorn" src={popcorn} alt="popcorn"></img>
+                    <img className="movie-ticket" src={movie_ticket} alt="movie-ticket"></img>
+                </div>
                 <section id="profile">
-                    {profile.map((p)=>(
-                        <section className="profile-info" key={p.user_id}>
-                            <h2 className="pName">{p.full_name}</h2>
-                            <h3 className="pAge">{p.age}</h3>
+                    
+                    {profile.map((person)=>(
+                        <section className="profile-info" key={person.user_id}>
+                            <div className="pName">{person.full_name}</div>
+                            <div className="pAge">{person.age}</div>
+                            <div className="reel-mood">Reel Mood
+                            <div className="type-mood">
+                                <input className = "input-mood"placeholder="Type your status"></input>
+                            </div>
+                            </div>
                         </section>
                     ))}
                     {/* <h2>Hello, {profile.full_name}!</h2> */}
