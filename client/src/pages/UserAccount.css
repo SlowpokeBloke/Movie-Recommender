@@ -176,6 +176,7 @@ h2 {
 #profile-container{
     flex-direction: column;
     width: 35%;
+    height:100vh;
     padding: 15px;
     justify-content: center;
     align-items: center;
@@ -365,6 +366,47 @@ h2 {
     background-color: #5c5c9a; 
     border: none; 
     color: #a0a0d1; 
+    padding: 10px; 
+    border-radius: 5px; 
+}
+
+.fav-title {
+    width: 45%; /* Set the width to 40% */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+#fav_genres,
+#fav_actors {
+    background-color: goldenrod;
+    padding: 20px; /* Add padding inside the sections */
+    width: 80%;
+    margin-bottom: 10px;
+    position: relative; 
+}
+
+
+#fav_genres .romance {
+    position: absolute; /* Set the position of the image to absolute */
+    top: -30px; /* Position the image at the top */
+    right: -20px; /* Position the image at the right */
+    width: 100px; /* Adjust the width of the image as needed */
+    height: auto; /* Maintain aspect ratio */
+}
+
+#fav_actors .movie-star {
+    position: absolute; /* Set the position of the image to absolute */
+    bottom: 0; /* Position the image at the top */
+    right: 0; /* Position the image at the right */
+    width: 120px; /* Adjust the width of the image as needed */
+    height: auto; /* Maintain aspect ratio */
+}
+
+
+
+.search-bar {
+    background-color: #5c5c9a; 
+    border: none; 
+    color: #a0a0d1; 
     font-size:20px;
     font-weight: 600;
     padding: 10px; 
@@ -421,40 +463,5 @@ h2 {
   align-content: center;
   vertical-align: middle;
 }
-
-.fav-title {
-    width: 45%; /* Set the width to 40% */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-}
-
-#fav_genres,
-#fav_actors {
-    background-color: goldenrod;
-    padding: 20px; /* Add padding inside the sections */
-    width: 80%;
-    margin-bottom: 10px;
-    position: relative; 
-}
-
-
-#fav_genres .romance {
-    position: absolute; /* Set the position of the image to absolute */
-    top: -30px; /* Position the image at the top */
-    right: -20px; /* Position the image at the right */
-    width: 100px; /* Adjust the width of the image as needed */
-    height: auto; /* Maintain aspect ratio */
-}
-
-#fav_actors .movie-star {
-    position: absolute; /* Set the position of the image to absolute */
-    bottom: 0; /* Position the image at the top */
-    right: 0; /* Position the image at the right */
-    width: 120px; /* Adjust the width of the image as needed */
-    height: auto; /* Maintain aspect ratio */
-}
-
-
-
-
 
 

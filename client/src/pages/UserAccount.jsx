@@ -91,7 +91,7 @@ const UserAccount = () => {
 
     // })
     return (
-
+        <div>
         <div id="account-container">
             <div id="profile-container" class="acct-container">
                 <div className="default-icon-user">
@@ -244,6 +244,7 @@ const UserAccount = () => {
 
 
             </div>
+        </div>
         </div>
     )
 }
