@@ -18,7 +18,7 @@ const UserAccount = () => {
     const [fav_actors, setActors] = useState([]);
 
     const [profile, setProfile] = useState([]);
-    useEffect(()=> {
+    useEffect(() => {
 
         const fetchProfile = async () => {
             try {
@@ -70,57 +70,26 @@ const UserAccount = () => {
     const [filteredMovies, setFilteredMovies] = useState([]);
     const [selectedMovies, setSelectedMovies] = useState([]);
 
-    const handleSearchInputChange = (event) => {setSearchInput(event.target.value);};
+    const handleSearchInputChange = (event) => { setSearchInput(event.target.value); };
+    //const handleItemSelect = (dropdownList, value) => dropdownList.selectList(value);
     useEffect(() => {
         const filtered = movies.filter(movie =>
             movie.title.toLowerCase().includes(searchInput.toLowerCase())
         ).slice(0, 10);
         setFilteredMovies(filtered);
     }, [searchInput, movies]);
-    const handleMovieSelect = async (movie_id, title) => {
-        var newSelection=false;
-        console.log("movie id: " + movie_id);
+    const handleMovieSelect = (movie_id, title) => {
         setSelectedMovies(currSelectedMovies => {
             if (currSelectedMovies.includes(movie_id)) {
-                newSelection=false;
-                console.log("inside filter;expected false: "+newSelection)
                 return currSelectedMovies.filter(id => id !== movie_id);
             } else {
-                newSelection=true;
-                console.log("inside filter;expected true: "+newSelection)
                 return [...currSelectedMovies, movie_id];
             }
         });
-
-        // if(newSelection){
-            const dataToSubmit = {
-            user_id: user_id,
-            movie_id: movie_id,
-            };
-            console.log("data: " +  dataToSubmit.movie_id);
-            try {
-                console.log("before post call")
-                const response = await axios.post('http://localhost:8800/submitToList', dataToSubmit);
-                console.log("****movie submitted" + response.data);
-            } catch (err) {
-                console.log(err);
-            }
-        // }
     };
-    const handleWLDelete = async (watch_list_id) => {
-        const dataToSubmit = {
-            watch_list_id: watch_list_id,
-        };
-            console.log("data: " +  dataToSubmit.watch_list_id);
-        try {
-            console.log("before post call")
-            const response = await axios.post('http://localhost:8800/deleteFromList', dataToSubmit);
-            console.log("****movie deleted" + response.data);
-        } catch (err) {
-            console.log(err);
-        }
-    };
+    // useEffect(() => {
 
+    // })
     return (
         <div>
         <div id="account-container">
@@ -240,12 +209,8 @@ const UserAccount = () => {
                     </div>
 
                 </section>
-                        {wlMovies.map((movie)=>(
-                                    <div class="movie" key={movie.watch_list_id}>
-                                        <p>{movie.title} <button onClick={() => handleWLDelete(movie.watch_list_id)}>Del</button></p>
-                                    </div>
-                                ))}
-                        </div>
+
+
 
                 <section id="movie-prefs" class="acct-container">
 
@@ -279,6 +244,7 @@ const UserAccount = () => {
 
 
             </div>
+        </div>
         </div>
     )
 }
