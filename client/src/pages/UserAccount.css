@@ -361,9 +361,65 @@ h2 {
     background-color: #5c5c9a; 
     border: none; 
     color: #a0a0d1; 
+    font-size:20px;
+    font-weight: 600;
     padding: 10px; 
-    border-radius: 5px; 
+    border-radius: 10px; 
+
 }
+.delete-button{
+  background-color: #5c5c9a;
+  padding-top:8px;
+  padding-bottom: 8px;
+  padding-left:20px;
+  padding-right:20px;
+  margin-right:10px;
+  font-weight: bold;
+  color: 1E1E1E;
+  font-size: 20px;
+  border-radius: 25px;
+  border:none;
+  cursor: pointer;
+  transition: opacity 0.15s ;
+}
+.add-button{
+  background-color: #5c5c9a;
+  padding-top:8px;
+  padding-bottom: 8px;
+  padding-left:30px;
+  padding-right:30px;
+  margin-right:10px;
+  font-weight: bold;
+  color: 1E1E1E;
+  font-size: 20px;
+  border-radius: 25px;
+  border: none;
+  cursor:pointer;
+  transition: opacity 0.15s ;
+}
+.add-button:active, .delete-button:active{
+  cursor:pointer;
+  background-color: #1a1224;
+  color: #5c5c9a;
+}
+.add-button:hover, .delete-button:hover{
+  cursor:pointer;
+  opacity: 0.5;
+}
+.basic-buttons{
+  margin-left: 10px;
+  margin-top: 10px;
+  align-items: center;
+  align-content: center;
+}
+.features{
+  align-items: center;
+  align-content: center;
+  vertical-align: middle;
+}
+
+
+
 
 
 
