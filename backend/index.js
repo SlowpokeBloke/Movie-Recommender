@@ -175,18 +175,16 @@ app.get("/p/:user_id", async (req, res) => {
 app.get("/fav_actors/:user_id", async (req, res) => {
     console.log("Handling /fav_actor request");
     const {user_id} = req.params;
+    await initFavoriteActors(user_id);
     try{
     const q = 
         `
-        SELECT DISTINCT a.actor_id, a.actor_name FROM responses r
-        JOIN response_actor ra
+        SELECT a.actor_id, a.actor_name FROM user_favorite_actor fa
         JOIN actor a
-        WHERE r.user_id = ?
-        AND r.response_id IN (SELECT MAX(response_id) FROM responses WHERE user_id=?)
-        AND r.response_id = ra.response_id
-        AND ra.actor_id = a.actor_id;
+        WHERE fa.user_id = ?
+        AND a.actor_id = fa.actor_id;
         `;
-        const [fav_actors] = await promiseDb.query(q,[user_id,user_id]);
+        const [fav_actors] = await promiseDb.query(q,user_id);
         if(fav_actors.length===0){
             return res.status(404).json({error: "Favorited actors not found for this user"});
         }
@@ -208,18 +206,16 @@ app.get("/fav_actors/:user_id", async (req, res) => {
 app.get("/fav_genres/:user_id", async (req, res) => {
     console.log("Handling /fav_genre request");
     const {user_id} = req.params;
+    await initFavoriteGenres(user_id);
     try{
     const q = 
         `
-        SELECT DISTINCT g.genre_id, g.genre_name FROM responses r
-        JOIN response_genre rg
+        SELECT g.genre_id, g.genre_name FROM user_favorite_genre fg
         JOIN genre g
-        WHERE r.user_id = ?
-        AND r.response_id IN (SELECT MAX(response_id) FROM responses WHERE user_id=?)
-        AND r.response_id = rg.response_id
-        AND rg.genre_id = g.genre_id;
+        WHERE fg.user_id = ?
+        AND g.genre_id = fg.genre_id;
         `;
-        const [fav_genres] = await promiseDb.query(q,[user_id,user_id]);
+        const [fav_genres] = await promiseDb.query(q,user_id);
         if(fav_genres.length===0){
             return res.status(404).json({error: "Favorited genres not found for this user"});
         }
@@ -239,6 +235,78 @@ app.get("/fav_genres/:user_id", async (req, res) => {
     // });
 });
 
+//initializes user_favorite_actor if empty from response tables
+async function initFavoriteActors(user_id){
+    console.log("initializing fav actors if empty from response tables");
+    // const {user_id} = req.params;
+    try{
+        const qa = 
+        `
+        SELECT COUNT(*) as a_count FROM user_favorite_actor fa
+        WHERE fa.user_id = ?;
+        `;
+        const [fa_result] = await promiseDb.query(qa,[user_id]);
+        const fa_count = fa_result[0].a_count;
+        console.log("fav actor table has " + fa_count + " entries");
+        if(fa_count===0){
+            // return res.status(404).json({error: "Favorited genres not found for this user"});
+            const fa_insert =`
+            INSERT INTO user_favorite_actor (user_id, actor_id)
+            (SELECT DISTINCT r.user_id, ra.actor_id FROM responses r
+                JOIN response_actor ra
+                JOIN actor a
+                WHERE r.user_id = ?
+                AND r.response_id IN (SELECT MAX(response_id) FROM responses WHERE user_id=?)
+                AND r.response_id = ra.response_id
+                AND ra.actor_id = a.actor_id
+            );`;
+            const [ufa_result] = await promiseDb.query(fa_insert,[user_id, user_id]);
+            console.log("inserted quiz actor responses into user favorite actor table " + ufa_result);
+        }else{
+            console.log("user favorite actor table already initialized");
+        }
+    }catch(err){
+        console.error(err);
+        //return res.json(err);
+    }
+
+};
+//initializes user_favorite_genre if empty from response tables
+async function initFavoriteGenres(user_id){
+    console.log("initializing fav genres if empty from response tables");
+    // const {user_id} = req.params;
+    try{
+        const qg = 
+        `
+        SELECT COUNT(*) as g_count FROM user_favorite_genre fg
+        WHERE fg.user_id = ?;
+        `;
+        const [fg_result] = await promiseDb.query(qg,[user_id]);
+        const fg_count = fg_result[0].g_count;
+        console.log("fav genre table has " + fg_count + " entries");
+        if(fg_count===0){
+            // return res.status(404).json({error: "Favorited genres not found for this user"});
+            const fg_insert =`
+            INSERT INTO user_favorite_genre (user_id, genre_id)
+            (SELECT DISTINCT r.user_id, rg.genre_id FROM responses r
+                JOIN response_genre rg
+                JOIN genre g
+                WHERE r.user_id = ?
+                AND r.response_id IN (SELECT MAX(response_id) FROM responses WHERE user_id=?)
+                AND r.response_id = rg.response_id
+                AND rg.genre_id = g.genre_id
+            );`;
+            const [ufg_result] = await promiseDb.query(fg_insert,[user_id, user_id]);
+            console.log("inserted quiz genre responses into user favorite genre table " + ufg_result);
+        }else{
+            console.log("user favorite genre table already initialized");
+        }
+    }catch(err){
+        console.error(err);
+        //return res.json(err);
+    }
+
+};
 
 app.get("/watch_list/:user_id", async (req, res) => {
     console.log("Handling /watch_list request");
