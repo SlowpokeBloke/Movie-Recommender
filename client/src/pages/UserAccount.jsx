@@ -10,10 +10,12 @@ import movie_ticket from '../user-acct-pics/movie-ticket.png';
 const UserAccount = () => {
     const {user_id} = useParams();
     const [movies, setMovies] = useState([]);
-    const [wlMovies, setWatchList] = useState([]);
+    
     const [fav_genres, setGenres] = useState([]);
     const [fav_actors, setActors] = useState([]);
 
+    const [wlMovies, setWatchList] = useState([]);
+    const [completedMovies, setCompleted] = useState([]);
     const [profile, setProfile] = useState([]);
   
     const movieDropDown = useDropDown();
@@ -79,6 +81,16 @@ const UserAccount = () => {
             }
         }
         fetchWatchList();
+        const fetchCompleted = async ()=>{
+            try{
+                const res = await axios.get(`http://localhost:8800/completed_list/${user_id}`)
+                setCompleted(res.data);
+
+            }catch(err){
+                console.log("Failed to fetch completed list\nerror message: " + err);
+            }
+        }
+        fetchCompleted();
     },[user_id]);
 
     const handleSearchInputChange = (event) => { setSearchInput(event.target.value); };
@@ -129,9 +141,22 @@ const UserAccount = () => {
         console.log("refreshing on del");
         window.location.reload();
     };
-    // useEffect(() => {
+    const handleWLUpdate = async (watch_list_id) => {
+        const dataToSubmit = {
+            watch_list_id: watch_list_id,
+        };
+            console.log("data: " +  dataToSubmit.watch_list_id);
+        try {
+            console.log("before post call")
+            const response = await axios.post('http://localhost:8800/updateList', dataToSubmit);
+            console.log("****movie updated" + response.data);
+        } catch (err) {
+            console.log(err);
+        }
+        console.log("refreshing on update");
+        window.location.reload();
+    };
 
-    // })
     return (
         <div id="account-container">
             <div id="profile-container" class="acct-container">
@@ -158,10 +183,17 @@ const UserAccount = () => {
             <div id="account-content" class="acct-container">
                 <section id="acctmovie-container" class="acct-container">
                     <section id="list-section">
-                        {/* <div id="favorite-list" class="list-container">
-                            <h3>Your Favorite Movies</h3>
-                            <p>No movies favorited!</p>
-                        </div> */}
+                        <div id="completed-list" class="list-container">
+                            <h3>Your Completed Movies</h3>
+                            {/* <p>No movies favorited!</p> */}
+                            {completedMovies.map((movie)=>(
+                                <div class="movie" key={movie.watch_list_id}>
+                                    <p>{movie.title}
+                                        <button onClick={() => handleWLDelete(movie.watch_list_id)}>Del</button>
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
                         <div id="towatch-list" class="list-container">
                             <h3>Your Movie Watchlist</h3>
                             <div class="dropdown">
@@ -190,25 +222,27 @@ const UserAccount = () => {
                                     ))}
                                 </ul>
                             )}
-                        </div>
+                            </div>
 
                             {/* <p>No movies planned to watch!</p> */}
                             <div className="selected-movies">
-                            <ul className="selected-movies-list">
-                                {selectedMovies.map((movie_id) => (
-                                    <li key={movie_id} className="selected-movie-item">
-                                        {movies.find((movie) => movie.movie_id === movie_id)?.title}
-                                    </li>
-                                ))}
-                            </ul>
-
-                        </div>
+                                <ul className="selected-movies-list">
+                                    {selectedMovies.map((movie_id) => (
+                                        <li key={movie_id} className="selected-movie-item">
+                                            {movies.find((movie) => movie.movie_id === movie_id)?.title}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                                 {wlMovies.map((movie)=>(
                                     <div class="movie" key={movie.watch_list_id}>
-                                        <p>{movie.title} <button onClick={() => handleWLDelete(movie.watch_list_id)}>Del</button></p>
+                                        <p>{movie.title}
+                                            <button onClick={()=> handleWLUpdate(movie.watch_list_id)}>Mark Complete</button>
+                                            <button onClick={() => handleWLDelete(movie.watch_list_id)}>Del</button>
+                                        </p>
                                     </div>
                                 ))}
-                        </div>
+                            </div>
                     </section>
 
                 <section id="movie-prefs" class="acct-container">

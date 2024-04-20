@@ -249,7 +249,32 @@ app.get("/watch_list/:user_id", async (req, res) => {
         SELECT wl.watch_list_id, m.title FROM watch_list wl
         JOIN movie m
         WHERE wl.user_id = ?
-        AND m.movie_id = wl.movie_id;
+        AND m.movie_id = wl.movie_id
+        AND wl.completed = false;
+        `;
+        const [saved_movies] = await promiseDb.query(q,[user_id]);
+        if(saved_movies.length===0){
+            return res.status(404).json({error: "Saved movies not found for this user"});
+        }
+        console.log(saved_movies);
+        return res.json(saved_movies);
+
+    }catch(err){
+        console.error(err);
+        return res.json(err);
+    }
+});
+app.get("/completed_list/:user_id", async (req, res) => {
+    console.log("Handling /watch_list request");
+    const {user_id} = req.params;
+    try{
+    const q = 
+        `
+        SELECT wl.watch_list_id, m.title FROM watch_list wl
+        JOIN movie m
+        WHERE wl.user_id = ?
+        AND m.movie_id = wl.movie_id
+        AND wl.completed = true;
         `;
         const [saved_movies] = await promiseDb.query(q,[user_id]);
         if(saved_movies.length===0){
@@ -311,6 +336,27 @@ app.post("/deleteFromList", async (req, res) =>
     }
 );
 
+app.post("/updateList", async (req, res) => 
+    {
+        const updateList =`
+            UPDATE watch_list
+            SET completed = true
+            WHERE watch_list_id=?;
+        `;
+        const values = [req.body.watch_list_id];
+        console.log("update vals: " + values);
+        try{
+            db.query(updateList, values);
+            console.log("updated watchlist entry");
+            return res.json({ status: "Success", message: "Movie status updated in WL", values});
+
+        }catch(error){
+            console.error("Failed to update Watch List entry");
+            return res.status(500).json({ status: "Error", message: "Failed to update movie status in list" });
+        }
+    }
+);
+
 // async function insertMovieToList(user_id, movie_id){
 //     console.log("Add List Entry, Parameters: ", [user_id, movie_id]);
 //     const insertToList = `
@@ -325,31 +371,31 @@ app.post("/deleteFromList", async (req, res) =>
 //     }
 // }
 
-async function deleteWatchListById(wl_id){
-    console.log("Del List Entry, Parameters: ", [wl_id]);
-    const deleteFromList =`
-        DELETE FROM watch_list WHERE watch_list_id=?;
-    `;
-    try{
-        db.query(deleteMovieFromList, [wl_id]);
-        console.log("Deleted watchlist entry");
-    }catch(error){
-        console.error("Failed to delete Watch List entry");
-    }
-}
+// async function deleteWatchListById(wl_id){
+//     console.log("Del List Entry, Parameters: ", [wl_id]);
+//     const deleteFromList =`
+//         DELETE FROM watch_list WHERE watch_list_id=?;
+//     `;
+//     try{
+//         db.query(deleteMovieFromList, [wl_id]);
+//         console.log("Deleted watchlist entry");
+//     }catch(error){
+//         console.error("Failed to delete Watch List entry");
+//     }
+// }
 
-async function deleteMovieFromList(user_id, movie_id){
-    console.log("Del List Entry, Parameters: ", [user_id, movie_id]);
-    const deleteFromList =`
-        DELETE FROM watch_list WHERE user_id=? AND movie_id=?;
-    `;
-    try{
-        db.query(deleteMovieFromList, [user_id, movie_id]);
-        console.log("New entry added to Watch List");
-    }catch(error){
-        console.error("Failed to insert entry into Watch List");
-    }
-}
+// async function deleteMovieFromList(user_id, movie_id){
+//     console.log("Del List Entry, Parameters: ", [user_id, movie_id]);
+//     const deleteFromList =`
+//         DELETE FROM watch_list WHERE user_id=? AND movie_id=?;
+//     `;
+//     try{
+//         db.query(deleteMovieFromList, [user_id, movie_id]);
+//         console.log("New entry added to Watch List");
+//     }catch(error){
+//         console.error("Failed to insert entry into Watch List");
+//     }
+// }
 
 async function selectCriteriaForMovie(user_id, response_id){
     // most recent response id
