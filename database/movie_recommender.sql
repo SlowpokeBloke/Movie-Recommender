@@ -137,21 +137,22 @@ CREATE TABLE watch_list(
 	watch_list_id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
     movie_id INT NOT NULL,
+    completed BOOLEAN DEFAULT FALSE,
     PRIMARY KEY(watch_list_id),
     UNIQUE KEY(user_id, movie_id),
     FOREIGN KEY(user_id) REFERENCES person(user_id) ON DELETE CASCADE,
     FOREIGN KEY(movie_id) REFERENCES movie(movie_id)
 );
 -- many to many:  each user has a list of movies they watched and each movie can be can be in many users watched list
-CREATE TABLE watched_list(
-	watched_list_id INT NOT NULL AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    movie_id INT NOT NULL,
-    PRIMARY KEY(watched_list_id),
-    UNIQUE KEY(user_id, movie_id),
-    FOREIGN KEY(user_id) REFERENCES person(user_id) ON DELETE CASCADE,
-    FOREIGN KEY(movie_id) REFERENCES movie(movie_id)
-);
+-- CREATE TABLE watched_list(
+-- 	watched_list_id INT NOT NULL AUTO_INCREMENT,
+--     user_id INT NOT NULL,
+--     movie_id INT NOT NULL,
+--     PRIMARY KEY(watched_list_id),
+--     UNIQUE KEY(user_id, movie_id),
+--     FOREIGN KEY(user_id) REFERENCES person(user_id) ON DELETE CASCADE,
+--     FOREIGN KEY(movie_id) REFERENCES movie(movie_id)
+-- );
 
 -- many to many: each user has many favorite genres and each genre can be in many users list
 CREATE TABLE user_favorite_genre(
