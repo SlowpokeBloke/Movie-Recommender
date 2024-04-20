@@ -340,8 +340,9 @@ const UserAccount = () => {
                             {/* <p>No movies favorited!</p> */}
                             {completedMovies.map((movie)=>(
                                 <div class="movie" key={movie.watch_list_id}>
-                                    <p>{movie.title}
+                                    <p>
                                         <button onClick={() => handleWLDelete(movie.watch_list_id)}>Del</button>
+                                        {movie.title}
                                     </p>
                                 </div>
                             ))}
@@ -388,9 +389,10 @@ const UserAccount = () => {
                             </div>
                                 {wlMovies.map((movie)=>(
                                     <div class="movie" key={movie.watch_list_id}>
-                                        <p>{movie.title}
+                                        <p>
                                             <button onClick={()=> handleWLUpdate(movie.watch_list_id)}>Mark Complete</button>
                                             <button onClick={() => handleWLDelete(movie.watch_list_id)}>Del</button>
+                                            {movie.title}
                                         </p>
                                     </div>
                                 ))}
@@ -400,12 +402,12 @@ const UserAccount = () => {
                 <section id="movie-prefs" class="acct-container">
 
                     <div className="fav-title" class="fav-container">
-                        <h2>Favorite Genres</h2>
+                        <h3>Favorite Genres</h3>
                             <ul className="genreList">
                                 {fav_genres.map((genre)=>(
                                     <li className="genre" key={genre.genre_id}>
-                                        {genre.genre_name}
                                         <button onClick={() => handleFGDelete(genre.genre_id)}>Del</button>
+                                        {genre.genre_name}
                                     </li>
                                 ))}
                             </ul>
@@ -454,8 +456,8 @@ const UserAccount = () => {
                             <ul className="actorList">
                                 {fav_actors.map((actor)=>(
                                     <li className="actor" key={actor.actor_id}>
-                                        {actor.actor_name}
                                         <button onClick={() => handleFADelete(actor.actor_id)}>Del</button>
+                                        {actor.actor_name}
                                     </li>
                                 ))}
                             </ul>
