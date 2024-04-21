@@ -93,8 +93,8 @@ const UserAccount = () => {
             }
         }
         fetchProfile();
-        console.log(profile.full_name);
-        console.log(profile.age);
+        // console.log(profile.full_name);
+        // console.log(profile.age);
 
         //fetches favorite genres for list
         const fetchFavGenres = async ()=>{
@@ -317,7 +317,6 @@ const UserAccount = () => {
                     <img className="movie-ticket" src={movie_ticket} alt="movie-ticket"></img>
                 </div>
                 <section id="profile">
-                    
                     {profile.map((person)=>(
                         <section className="profile-info" key={person.user_id}>
                             <div className="pName">{person.full_name}</div>
