@@ -47,10 +47,6 @@ const Login = () => {
     return (
         <div className="Login">
 
-            <div className="header">
-                <img src={logo} alt="Reel Match Logo" className="logo"/> 
-                <h3>ReelMatch</h3>
-            </div>
 
             <h1>Welcome back</h1>
 
