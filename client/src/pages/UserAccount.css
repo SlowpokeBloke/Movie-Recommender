@@ -154,9 +154,15 @@
     padding: 15px;
 }
 
-.acct-container {
+.profile-acct-container {
   display: flex;
   background-color: #3E2750;
+  border-radius: 5px;
+  margin: 15px;
+  height: 75%;
+}
+.acct-container {
+  display: flex;
   border-radius: 5px;
   margin: 15px;
 }
@@ -250,19 +256,31 @@
 }
 
 .list-container {
-    background-color: grey;
+    background-color:#3E2750;
     border-radius: 5px;
     padding: 5px;
     margin: 15px;
 }
-
+.list-container h3{
+  color:#FFD970;
+}
+.movie {
+  background-color: #6c3894;
+  border-radius: 15px;
+  width: 30%;
+}
+.movie button{
+  background-color: goldenrod;
+}
 #movie-prefs {
     flex-direction: row;
     justify-content: space-evenly;
 }
-
+.deletebtn {
+  background-color: darkred;
+}
 .fav-container {
-    background-color: goldenrod;
+    background-color:#ebbd40;
     padding: 5px;
 }
 /* #recommender {
@@ -276,27 +294,15 @@
     position: relative;
     display: inline-block;
   }
-  
-  /* Dropdown Content (Hidden by Default) */
-  .dropdown-content {
-    /* display: none; */
-    position: absolute;
-    background-color: #f6f6f6;
-    min-width: 230px;
-    border: 1px solid #ddd;
-    z-index: 1;
+  .movie-item {
+    color: #FFD970;
   }
-  
-  /* Links inside the dropdown */
-  .dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-  }
-  
+  /* .dropdown:hover {
+    background-color: #A0A0D1;
+    border-radius: 15px;
+  } */
   /* Change color of dropdown links on hover */
-  .movie-item a:hover {background-color: #f1f1f1}
+  .movie-item:hover {background-color: #69416d}
 
   ul{
     list-style-type: none;

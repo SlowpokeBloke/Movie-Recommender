@@ -7,6 +7,7 @@ import check from '../icon_pics/check.png';
 import popcorn from '../icon_pics/popcorn_icon.png';
 import movie_ticket from '../user-acct-pics/movie-ticket.png';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CheckIcon from '@mui/icons-material/Check';
 
 const UserAccount = () => {
     const {user_id} = useParams();
@@ -312,7 +313,7 @@ const UserAccount = () => {
 
     return (
         <div id="account-container">
-            <div id="profile-container" class="acct-container">
+            <div id="profile-container" class="profile-acct-container">
                 <div className= "default-icon-user">
                     <img className="cute-popcorn" src={popcorn} alt="popcorn"></img>
                     <img className="movie-ticket" src={movie_ticket} alt="movie-ticket"></img>
@@ -392,8 +393,8 @@ const UserAccount = () => {
                                 {wlMovies.map((movie)=>(
                                     <div class="movie" key={movie.watch_list_id}>
                                         <p>
-                                            <button onClick={()=> handleWLUpdate(movie.watch_list_id)}>Mark Complete</button>
-                                            <button onClick={() => handleWLDelete(movie.watch_list_id)}><DeleteIcon/></button>
+                                            <button onClick={()=> handleWLUpdate(movie.watch_list_id)}><CheckIcon/>Complete</button>
+                                            <button onClick={() => handleWLDelete(movie.watch_list_id)} class="deletebtn"><DeleteIcon/></button>
                                             {movie.title}
                                         </p>
                                     </div>
@@ -405,16 +406,7 @@ const UserAccount = () => {
 
                     <div className="fav-title" class="fav-container">
                         <h3>Favorite Genres</h3>
-                            <ul className="genreList">
-                                {fav_genres.map((genre)=>(
-                                    <li className="genre" key={genre.genre_id}>
-                                        <button onClick={() => handleFGDelete(genre.genre_id)}><DeleteIcon/></button>
-                                        {genre.genre_name}
-                                    </li>
-                                ))}
-                            </ul>
-                            
-                            <div class="dropdown">
+                        <div class="dropdown">
                                 {/* <button onclick={movieDropDown.toggleList}class="dropbtn">Add a Movie</button> */}
                                 <input
                                 type="text"
@@ -452,18 +444,17 @@ const UserAccount = () => {
                                     ))}
                                 </ul>
                             </div>
-                        </div>
-                        <div id="fav_actors" class="fav-container">
-                            <h3>Favorite Actors</h3>
-                            <ul className="actorList">
-                                {fav_actors.map((actor)=>(
-                                    <li className="actor" key={actor.actor_id}>
-                                        <button onClick={() => handleFADelete(actor.actor_id)}><DeleteIcon/></button>
-                                        {actor.actor_name}
+                            <ul className="genreList">
+                                {fav_genres.map((genre)=>(
+                                    <li className="genre" key={genre.genre_id}>
+                                        <button onClick={() => handleFGDelete(genre.genre_id)}><DeleteIcon/></button>
+                                        {genre.genre_name}
                                     </li>
                                 ))}
                             </ul>
-
+                        </div>
+                        <div id="fav_actors" class="fav-container">
+                            <h3>Favorite Actors</h3>
                             <div class="dropdown">
                                 {/* <button onclick={movieDropDown.toggleList}class="dropbtn">Add a Movie</button> */}
                                 <input
@@ -502,6 +493,14 @@ const UserAccount = () => {
                                     ))}
                                 </ul>
                             </div>
+                            <ul className="actorList">
+                                {fav_actors.map((actor)=>(
+                                    <li className="actor" key={actor.actor_id}>
+                                        <button onClick={() => handleFADelete(actor.actor_id)}><DeleteIcon/></button>
+                                        {actor.actor_name}
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
                     </section>
                     {/* <section id="recommender">
