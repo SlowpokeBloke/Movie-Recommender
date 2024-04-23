@@ -401,6 +401,7 @@ const UserAccount = () => {
                                 ))}
                             </div>
                     </section>
+                    
 
                 <section id="movie-prefs" class="acct-container">
 

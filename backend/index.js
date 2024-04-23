@@ -43,14 +43,6 @@ app.get("/", (req, res)=>{
     res.json("hello this is the backend")
 })
 
-// app.get("/movie", (req,res)=>{
-//     const q = "SHOW TABLES;"
-//     db.query(q,(err,data)=>{
-//         if(err) return res.json(err)
-//         return res.json(data)
-//     })
-
-// })
 
 app.post('/createAccount', (req,res) => {
     const { full_name, age, email, password } = req.body;
@@ -509,45 +501,6 @@ app.post("/updateList", async (req, res) =>
     }
 );
 
-// async function insertMovieToList(user_id, movie_id){
-//     console.log("Add List Entry, Parameters: ", [user_id, movie_id]);
-//     const insertToList = `
-//         INSERT INTO watch_list (user_id, movie_id)
-//         VALUES (?, ?)
-//     `;
-//     try{
-//         db.query(insertToList, [user_id, movie_id]);
-//         console.log("New entry added to Watch List");
-//     }catch(error){
-//         console.error("Failed to insert entry into Watch List");
-//     }
-// }
-
-// async function deleteWatchListById(wl_id){
-//     console.log("Del List Entry, Parameters: ", [wl_id]);
-//     const deleteFromList =`
-//         DELETE FROM watch_list WHERE watch_list_id=?;
-//     `;
-//     try{
-//         db.query(deleteMovieFromList, [wl_id]);
-//         console.log("Deleted watchlist entry");
-//     }catch(error){
-//         console.error("Failed to delete Watch List entry");
-//     }
-// }
-
-// async function deleteMovieFromList(user_id, movie_id){
-//     console.log("Del List Entry, Parameters: ", [user_id, movie_id]);
-//     const deleteFromList =`
-//         DELETE FROM watch_list WHERE user_id=? AND movie_id=?;
-//     `;
-//     try{
-//         db.query(deleteMovieFromList, [user_id, movie_id]);
-//         console.log("New entry added to Watch List");
-//     }catch(error){
-//         console.error("Failed to insert entry into Watch List");
-//     }
-// }
 
 async function selectCriteriaForMovie(user_id, response_id){
     // most recent response id
@@ -647,7 +600,7 @@ app.post("/submitQuiz", async (req,res)=>{
     console.log("Received quiz submission:", req.body);
     
   try{ 
-        //not wrapping it 
+        
         const{user_id, nightType,releaseDate,genreType, actorType, ratingChosen} = req.body;
         const values = [user_id, releaseDate,nightType, ratingChosen];
 
@@ -757,178 +710,6 @@ app.get("/selection/:user_id/:selection_id", async (req, res) => {
         res.status(500).json({ error: "Failed to fetch selection data" });
     }
 });
-
-//most recent response
-app.get("/recent_response", (req,res)=>{
-    const query = 
-    `
-    SELECT p.user_id, p.full_name, r.response_id, r.release_date, r.movie_night, r.ratings
-    FROM person p 
-    JOIN responses r on p.user_id = r.user_id
-    WHERE p.user_id = 2 AND r.response_id IN (
-	    SELECT MAX(r2.response_id)
-        FROM responses r2
-        WHERE r2.user_id = p.user_id
-    );
-
-    `;
-    db.query(query,(err, data)=>{
-        if(err) return res.json(err)
-        return res.json(data)
-    })
-});
-// response_genres {test}
-app.get("/user_resp_genre", (req,res)=>{
-    const query = 
-    `
-    SELECT mg.movie_id, m.title, g.genre_id, g.genre_name
-    FROM response_genre r
-    JOIN genre g ON r.genre_id = g.genre_id
-    JOIN movie_genre mg ON g.genre_id = mg.genre_id
-    JOIN movie m ON mg.movie_id = m.movie_id
-    WHERE r.response_id = 6
-    ORDER BY g.genre_name, mg.movie_id;
-    ;
-
-    `;
-    db.query(query,(err, data)=>{
-        if(err) return res.json(err)
-        return res.json(data)
-    })
-});
-// response_actors {test}
-app.get("/user_resp_actor", (req,res)=>{
-    const query = 
-    `
-    SELECT am.movie_id, m.title, a.actor_id, a.actor_name
-    FROM response_actor ra
-    JOIN actor a ON ra.actor_id = a.actor_id
-    JOIN actor_movie am ON a.actor_id = am.actor_id
-    JOIN movie m ON am.movie_id = m.movie_id
-    WHERE ra.response_id = 6
-    ORDER BY a.actor_name, am.movie_id;
-    `;
-    db.query(query,(err, data)=>{
-        if(err) return res.json(err)
-        return res.json(data)
-    })
-});
-
-// response of actors and genres combined {test}
-app.get("/user_resp_genre_actor", (req,res)=>{
-    const query = 
-    `
-    SELECT m.movie_id, m.title, a.actor_id, a.actor_name, g.genre_id, g.genre_name
-    FROM movie m
-    JOIN actor_movie am ON m.movie_id = am.movie_id
-    JOIN actor a ON am.actor_id = a.actor_id
-    JOIN movie_genre mg ON m.movie_id = mg.movie_id
-    JOIN genre g ON mg.genre_id = g.genre_id
-        WHERE EXISTS (
-                SELECT 1 FROM response_actor ra 
-                WHERE ra.actor_id = a.actor_id AND ra.response_id = 6
-        ) AND EXISTS (
-                SELECT 1 FROM response_genre rg 
-                WHERE rg.genre_id = g.genre_id AND rg.response_id = 6
-        )
-    ORDER BY a.actor_name, g.genre_name, m.movie_id;
-
-    `;
-    db.query(query,(err, data)=>{
-        if(err) return res.json(err)
-        return res.json(data)
-    })
-});
-
-//user response with genres, actors, ratings, and release_dates {test}
-app.get("/total_user_resp/:user_id", async (req, res)=>{
-    const {user_id} = req.params;
-    try{
-        const recentResponse= 
-        `
-        SELECT p.user_id, p.full_name, r.response_id, r.release_date, r.movie_night, r.ratings
-        FROM person p 
-        JOIN responses r on p.user_id = r.user_id
-        WHERE p.user_id = ? AND r.response_id IN (
-	        SELECT MAX(r2.response_id)
-            FROM responses r2
-            WHERE r2.user_id = p.user_id);
-        `
-        //query that needs the param of the user_id
-        const [userResponses] = await promiseDb.query(recentResponse,[user_id]);
-        if(userResponses.length === 0 ){
-            return res.status(404).json("No user responses found");
-        }
-
-        const {response_id, release_date, ratings } = userResponses[0];
-        // condition for release date
-        let releaseDateChosen = "";
-
-        if(release_date.includes("10 years")){
-            releaseDateChosen = "AND m.release_date >= CURDATE() - INTERVAL 10 YEAR";
-        } else if (release_date.includes("20 years")){
-            releaseDateChosen = "AND m.release_date >= CURDATE() - INTERVAL 20 YEAR";
-        } else if (release_date.includes("Any release date")){
-            releaseDateChosen = "AND m.release_date <= CURDATE()"
-        }
-        //condition for ratings since dynamic
-        let ratingsChosen = "";
-        if (ratings === "High Ratings"){
-            ratingsChosen = "AND v.vote_avg >= 7.0";
-        } else if (ratings === "Low Ratings"){
-            ratingsChosen = "AND v.vote_avg <= 6.9";
-        }
-
-        const moviePool = 
-        `
-        SELECT m.movie_id, m.title, a.actor_id, a.actor_name, g.genre_id, g.genre_name
-        FROM movie m
-        JOIN actor_movie am ON m.movie_id = am.movie_id
-        JOIN actor a ON am.actor_id = a.actor_id
-        JOIN movie_genre mg ON m.movie_id = mg.movie_id
-        JOIN genre g ON mg.genre_id = g.genre_id
-            WHERE EXISTS (
-                    SELECT 1 FROM response_actor ra 
-                    WHERE ra.actor_id = a.actor_id AND ra.response_id = ${response_id}
-            ) AND EXISTS (
-                    SELECT 1 FROM response_genre rg 
-                    WHERE rg.genre_id = g.genre_id AND rg.response_id = ${response_id}
-            )
-            ${releaseDateChosen}
-            ${ratingsChosen}
-            GROUP BY m.movie_id
-            ORDER BY RAND()
-            LIMIT 1;
-        `;
-        const [movies] = await promiseDb.query(moviePool);
-        if(movies.length === 0){
-            return res.status(404).json("No movies found based on user responses. Try again.");
-        }
-        res.json({status: "Success", movies});
-       
-        // when movie found, insert into selection
-        const movie_id = movies[0].movie_id;
-        
-        const insertSelection = `
-            INSERT INTO selection (user_id, movie_id, response_id)
-            VALUES (?, ?, ?);
-        `;
-        await promiseDb.query(insertSelection, [user_id, movie_id, response_id]).then(result => {
-            
-            const selection_id = result[0].insertId;
-            res.json({ status: "Success", message: "New selection created", selection_id, user_id, response_id });
-        }).catch(err => {
-            console.error("Insert failed:", err);
-            res.status(500).json({ error: "Failed to insert selection", details: err.message });
-        });}
-        catch (error){
-            console.error("Database query error: ", error);
-            res.status(500).json("Failed to process user responses because of responses");            
-        }   
-        
-});
-
-
 
 app.listen(8800, () => {
     console.log("Express server listening on port 8800");
