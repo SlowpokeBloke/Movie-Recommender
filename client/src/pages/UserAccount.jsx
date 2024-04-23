@@ -191,6 +191,7 @@ const UserAccount = () => {
                                 </ul>
                             )}
                         </div>
+                        
 
                             {/* <p>No movies planned to watch!</p> */}
                             <div className="selected-movies">
@@ -210,6 +211,7 @@ const UserAccount = () => {
                                 ))}
                         </div>
                     </section>
+                    
 
                 <section id="movie-prefs" class="acct-container">
 
