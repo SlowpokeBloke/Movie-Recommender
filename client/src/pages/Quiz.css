@@ -162,7 +162,7 @@ input[type="checkbox"] {
   border: none;
   transition-property: all 0.15s;
   margin-bottom: 58px;
-  margin-top: 50px;
+  margin-top: 60px;
 }
 
 .submit-button:hover {

@@ -35,19 +35,16 @@ const Quiz = () => {
     };
     // navigation
     const navigate = useNavigate();
-
-
     // drop down lists
-    const actorDropDown = useDropDown();
     const genreDropDown = useDropDown();
     const ratingDropDown = useDropDown();
     const releaseDateDropDown = useDropDown();
-
     // selected value in specific drop down list
     const handleItemSelect = (dropdownList, value) => dropdownList.selectList(value);
     // fetching data from genre and actors
     const [genres, setGenres] = useState([]);
     const [actors, setActors] = useState([]);
+
     useEffect(() => {
         const getGenre = async () => {
             try {
@@ -88,7 +85,7 @@ const Quiz = () => {
     const handleGenreSelect = (genre_id) => {
         setSelectedGenres((currSelectedGenres) => {
             if (currSelectedGenres.includes(genre_id)) {
-                {/* removes genre from selection once selected */ }
+                {/* removes genre from selection once selected returns new array*/ }
                 return currSelectedGenres.filter(id => id !== genre_id);
             } else {
                 return [...currSelectedGenres, genre_id];
@@ -130,8 +127,8 @@ const Quiz = () => {
     //contains user_id
     //debugging
     const { user_id} = useParams();
-    console.log(useParams());
-    console.log("user_id from useParams:", user_id);
+   // console.log(useParams());
+   // console.log("user_id from useParams:", user_id);
 
 
     //submitting form
@@ -163,9 +160,9 @@ const Quiz = () => {
             const response = await axios.post('http://localhost:8800/submitQuiz', dataToSubmit);
             console.log("Quiz API Response:", response.data);
             if (response.data.status === "Success") {
-                // shows user_id in navigation as a token ot pass user_id 
-               // console.log(`Navigating to Selection with user_id: ${user_id} and selection_id: ${selection_id}`);
-                 //fetches selection_id from backend
+                //shows user_id in navigation as a token to pass user_id 
+                //console.log(`Navigating to Selection with user_id: ${user_id} and selection_id: ${selection_id}`);
+                //fetches selection_id from backend
                  const {selection_id} = response.data;
                 navigate(`/Selection/${user_id}/${selection_id}`);
 
