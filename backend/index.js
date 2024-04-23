@@ -175,18 +175,16 @@ app.get("/p/:user_id", async (req, res) => {
 app.get("/fav_actors/:user_id", async (req, res) => {
     console.log("Handling /fav_actor request");
     const {user_id} = req.params;
+    await initFavoriteActors(user_id);
     try{
     const q = 
         `
-        SELECT DISTINCT a.actor_id, a.actor_name FROM responses r
-        JOIN response_actor ra
+        SELECT a.actor_id, a.actor_name FROM user_favorite_actor fa
         JOIN actor a
-        WHERE r.user_id = ?
-        AND r.response_id IN (SELECT MAX(response_id) FROM responses WHERE user_id=?)
-        AND r.response_id = ra.response_id
-        AND ra.actor_id = a.actor_id;
+        WHERE fa.user_id = ?
+        AND a.actor_id = fa.actor_id;
         `;
-        const [fav_actors] = await promiseDb.query(q,[user_id,user_id]);
+        const [fav_actors] = await promiseDb.query(q,user_id);
         if(fav_actors.length===0){
             return res.status(404).json({error: "Favorited actors not found for this user"});
         }
@@ -196,30 +194,20 @@ app.get("/fav_actors/:user_id", async (req, res) => {
         console.error(err);
         return res.json(err);
     }
-    // db.query(q, (err, data) => {
-    //     if (err) {
-    //         console.error("Database query error:", err);
-    //         return res.json(err);
-    //     }
-    //     console.log("Database query success:", data);
-    //     return res.json(data);
-    // });
 });
 app.get("/fav_genres/:user_id", async (req, res) => {
     console.log("Handling /fav_genre request");
     const {user_id} = req.params;
+    await initFavoriteGenres(user_id);
     try{
     const q = 
         `
-        SELECT DISTINCT g.genre_id, g.genre_name FROM responses r
-        JOIN response_genre rg
+        SELECT g.genre_id, g.genre_name FROM user_favorite_genre fg
         JOIN genre g
-        WHERE r.user_id = ?
-        AND r.response_id IN (SELECT MAX(response_id) FROM responses WHERE user_id=?)
-        AND r.response_id = rg.response_id
-        AND rg.genre_id = g.genre_id;
+        WHERE fg.user_id = ?
+        AND g.genre_id = fg.genre_id;
         `;
-        const [fav_genres] = await promiseDb.query(q,[user_id,user_id]);
+        const [fav_genres] = await promiseDb.query(q,user_id);
         if(fav_genres.length===0){
             return res.status(404).json({error: "Favorited genres not found for this user"});
         }
@@ -229,16 +217,180 @@ app.get("/fav_genres/:user_id", async (req, res) => {
         console.error(err);
         return res.json(err);
     }
-    // db.query(q, (err, data) => {
-    //     if (err) {
-    //         console.error("Database query error:", err);
-    //         return res.json(err);
-    //     }
-    //     console.log("Database query success:", data);
-    //     return res.json(data);
-    // });
 });
 
+//initializes user_favorite_actor if empty from response tables
+async function initFavoriteActors(user_id){
+    // const {user_id} = req.params;
+    try{
+        const qa = 
+        `
+        SELECT COUNT(*) as a_count FROM user_favorite_actor fa
+        WHERE fa.user_id = ?;
+        `;
+        const [fa_result] = await promiseDb.query(qa,[user_id]);
+        const fa_count = fa_result[0].a_count;
+        console.log("fav actor table has " + fa_count + " entries");
+        if(fa_count===0){
+            console.log("initializing fav actors if empty from response tables");
+            // return res.status(404).json({error: "Favorited genres not found for this user"});
+            const fa_insert =`
+            INSERT INTO user_favorite_actor (user_id, actor_id)
+            (SELECT DISTINCT r.user_id, ra.actor_id FROM responses r
+                JOIN response_actor ra
+                JOIN actor a
+                WHERE r.user_id = ?
+                AND r.response_id IN (SELECT MAX(response_id) FROM responses WHERE user_id=?)
+                AND r.response_id = ra.response_id
+                AND ra.actor_id = a.actor_id
+            );`;
+            const [ufa_result] = await promiseDb.query(fa_insert,[user_id, user_id]);
+            console.log("inserted quiz actor responses into user favorite actor table " + ufa_result);
+        }else{
+            console.log("user favorite actor table already initialized");
+        }
+    }catch(err){
+        console.error(err);
+        //return res.json(err);
+    }
+
+};
+//initializes user_favorite_genre if empty from response tables
+async function initFavoriteGenres(user_id){
+    // const {user_id} = req.params;
+    try{
+        const qg = 
+        `
+        SELECT COUNT(*) as g_count FROM user_favorite_genre fg
+        WHERE fg.user_id = ?;
+        `;
+        const [fg_result] = await promiseDb.query(qg,[user_id]);
+        const fg_count = fg_result[0].g_count;
+        console.log("fav genre table has " + fg_count + " entries");
+        if(fg_count===0){
+            console.log("initializing fav genres if empty from response tables");
+            // return res.status(404).json({error: "Favorited genres not found for this user"});
+            const fg_insert =`
+            INSERT INTO user_favorite_genre (user_id, genre_id)
+            (SELECT DISTINCT r.user_id, rg.genre_id FROM responses r
+                JOIN response_genre rg
+                JOIN genre g
+                WHERE r.user_id = ?
+                AND r.response_id IN (SELECT MAX(response_id) FROM responses WHERE user_id=?)
+                AND r.response_id = rg.response_id
+                AND rg.genre_id = g.genre_id
+            );`;
+            const [ufg_result] = await promiseDb.query(fg_insert,[user_id, user_id]);
+            console.log("inserted quiz genre responses into user favorite genre table " + ufg_result);
+        }else{
+            console.log("user favorite genre table already initialized");
+        }
+    }catch(err){
+        console.error(err);
+        //return res.json(err);
+    }
+
+};
+
+app.post("/submitToFavActors", async (req, res)=>{
+    if(!promiseDb){
+        console.log("Not connected to promiseDb");
+    }
+    console.log("Submitting actor selection");
+    console.log("Received actor selection:", req.body);
+    //console.log("Add List Entry, Parameters: ", [user_id, movie_id]);
+    const insertToFavorites = `
+        INSERT INTO user_favorite_actor (user_id, actor_id)
+        VALUES (?, ?);
+    `;
+    const values = [
+        req.body.user_id,
+        req.body.actor_id
+    ];
+
+    console.log("vals: " + values);
+    try{
+        const result = await promiseDb.query(insertToFavorites, values);
+        const fa_id = result;
+        console.log("New entry added to Favorite Actors");
+        return res.json({ status: "Success", message: "Actor Selection processed and added into FA", values});
+    }catch(error){
+        console.error("Failed to insert entry into FA");
+        return res.status(500).json({ status: "Error", message: "Failed to add actor into FA" });
+    }
+});
+app.post("/deleteFavActor", async (req, res) => 
+    {
+        //console.log("Del List Entry, Parameters: ", [req.body.watch_list_id]);
+        const deleteFavActor =`
+            DELETE FROM user_favorite_actor WHERE user_id=? AND actor_id=?;
+        `;
+        const values = [
+            req.body.user_id,
+            req.body.actor_id,
+        ];
+        console.log("del vals: " + values);
+        try{
+            await promiseDb.query(deleteFavActor, values);
+            console.log("Deleted favorite Actor entry");
+            return res.json({ status: "Success", message: "Actor Selection processed and deleted from UFA", values});
+
+        }catch(error){
+            console.error("Failed to delete Actor entry");
+            return res.status(500).json({ status: "Error", message: "Failed to delete actor from UFA" });
+        }
+    }
+);
+
+app.post("/submitToFavGenres", async (req, res)=>{
+    if(!promiseDb){
+        console.log("Not connected to promiseDb");
+    }
+    console.log("Submitting genre selection");
+    console.log("Received genre selection:", req.body);
+    //console.log("Add List Entry, Parameters: ", [user_id, movie_id]);
+    const insertToFavorites = `
+        INSERT INTO user_favorite_genre (user_id, genre_id)
+        VALUES (?, ?);
+    `;
+    const values = [
+        req.body.user_id,
+        req.body.genre_id
+    ];
+
+    console.log("vals: " + values);
+    try{
+        const result = await promiseDb.query(insertToFavorites, values);
+        const fg_id = result;
+        console.log("New entry added to Favorite Genres");
+        return res.json({ status: "Success", message: "Genre Selection processed and added into FG", values});
+    }catch(error){
+        console.error("Failed to insert entry into FG");
+        return res.status(500).json({ status: "Error", message: "Failed to add actor into FG" });
+    }
+});
+app.post("/deleteFavGenre", async (req, res) => 
+    {
+        //console.log("Del List Entry, Parameters: ", [req.body.watch_list_id]);
+        const deleteFavGenre =`
+            DELETE FROM user_favorite_genre WHERE user_id=? AND genre_id=?;
+        `;
+        const values = [
+            req.body.user_id,
+            req.body.genre_id,
+        ];
+        console.log("del vals: " + values);
+        try{
+            await promiseDb.query(deleteFavGenre, values);
+            console.log("Deleted favorite Genre entry");
+            return res.json({ status: "Success", message: "Genre Selection processed and deleted from UFG", values});
+
+        }catch(error){
+            console.error("Failed to delete Genre entry");
+            return res.status(500).json({ status: "Error", message: "Failed to delete genre from UFG" });
+        }
+    }
+);
 
 app.get("/watch_list/:user_id", async (req, res) => {
     console.log("Handling /watch_list request");
@@ -249,7 +401,32 @@ app.get("/watch_list/:user_id", async (req, res) => {
         SELECT wl.watch_list_id, m.title FROM watch_list wl
         JOIN movie m
         WHERE wl.user_id = ?
-        AND m.movie_id = wl.movie_id;
+        AND m.movie_id = wl.movie_id
+        AND wl.completed = false;
+        `;
+        const [saved_movies] = await promiseDb.query(q,[user_id]);
+        if(saved_movies.length===0){
+            return res.status(404).json({error: "Saved movies not found for this user"});
+        }
+        console.log(saved_movies);
+        return res.json(saved_movies);
+
+    }catch(err){
+        console.error(err);
+        return res.json(err);
+    }
+});
+app.get("/completed_list/:user_id", async (req, res) => {
+    console.log("Handling /watch_list request");
+    const {user_id} = req.params;
+    try{
+    const q = 
+        `
+        SELECT wl.watch_list_id, m.title FROM watch_list wl
+        JOIN movie m
+        WHERE wl.user_id = ?
+        AND m.movie_id = wl.movie_id
+        AND wl.completed = true;
         `;
         const [saved_movies] = await promiseDb.query(q,[user_id]);
         if(saved_movies.length===0){
@@ -300,13 +477,34 @@ app.post("/deleteFromList", async (req, res) =>
         const values = [req.body.watch_list_id];
         console.log("del vals: " + values);
         try{
-            db.query(deleteFromList, values);
+            await promiseDb.query(deleteFromList, values);
             console.log("Deleted watchlist entry");
             return res.json({ status: "Success", message: "Movie Selection processed and deleted from WL", values});
 
         }catch(error){
             console.error("Failed to delete Watch List entry");
             return res.status(500).json({ status: "Error", message: "Failed to delete from list" });
+        }
+    }
+);
+
+app.post("/updateList", async (req, res) => 
+    {
+        const updateList =`
+            UPDATE watch_list
+            SET completed = true
+            WHERE watch_list_id=?;
+        `;
+        const values = [req.body.watch_list_id];
+        console.log("update vals: " + values);
+        try{
+            db.query(updateList, values);
+            console.log("updated watchlist entry");
+            return res.json({ status: "Success", message: "Movie status updated in WL", values});
+
+        }catch(error){
+            console.error("Failed to update Watch List entry");
+            return res.status(500).json({ status: "Error", message: "Failed to update movie status in list" });
         }
     }
 );
@@ -325,31 +523,31 @@ app.post("/deleteFromList", async (req, res) =>
 //     }
 // }
 
-async function deleteWatchListById(wl_id){
-    console.log("Del List Entry, Parameters: ", [wl_id]);
-    const deleteFromList =`
-        DELETE FROM watch_list WHERE watch_list_id=?;
-    `;
-    try{
-        db.query(deleteMovieFromList, [wl_id]);
-        console.log("Deleted watchlist entry");
-    }catch(error){
-        console.error("Failed to delete Watch List entry");
-    }
-}
+// async function deleteWatchListById(wl_id){
+//     console.log("Del List Entry, Parameters: ", [wl_id]);
+//     const deleteFromList =`
+//         DELETE FROM watch_list WHERE watch_list_id=?;
+//     `;
+//     try{
+//         db.query(deleteMovieFromList, [wl_id]);
+//         console.log("Deleted watchlist entry");
+//     }catch(error){
+//         console.error("Failed to delete Watch List entry");
+//     }
+// }
 
-async function deleteMovieFromList(user_id, movie_id){
-    console.log("Del List Entry, Parameters: ", [user_id, movie_id]);
-    const deleteFromList =`
-        DELETE FROM watch_list WHERE user_id=? AND movie_id=?;
-    `;
-    try{
-        db.query(deleteMovieFromList, [user_id, movie_id]);
-        console.log("New entry added to Watch List");
-    }catch(error){
-        console.error("Failed to insert entry into Watch List");
-    }
-}
+// async function deleteMovieFromList(user_id, movie_id){
+//     console.log("Del List Entry, Parameters: ", [user_id, movie_id]);
+//     const deleteFromList =`
+//         DELETE FROM watch_list WHERE user_id=? AND movie_id=?;
+//     `;
+//     try{
+//         db.query(deleteMovieFromList, [user_id, movie_id]);
+//         console.log("New entry added to Watch List");
+//     }catch(error){
+//         console.error("Failed to insert entry into Watch List");
+//     }
+// }
 
 async function selectCriteriaForMovie(user_id, response_id){
     // most recent response id
