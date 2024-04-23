@@ -272,6 +272,9 @@
 .movie button{
   background-color: goldenrod;
 }
+.completebtn {
+  padding: 2px;
+}
 #movie-prefs {
     flex-direction: row;
     justify-content: space-evenly;

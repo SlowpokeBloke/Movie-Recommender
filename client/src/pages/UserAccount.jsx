@@ -393,7 +393,7 @@ const UserAccount = () => {
                                 {wlMovies.map((movie)=>(
                                     <div class="movie" key={movie.watch_list_id}>
                                         <p>
-                                            <button onClick={()=> handleWLUpdate(movie.watch_list_id)}><CheckIcon/>Complete</button>
+                                            <button onClick={()=> handleWLUpdate(movie.watch_list_id)} class="completebtn"><CheckIcon/>Complete</button>
                                             <button onClick={() => handleWLDelete(movie.watch_list_id)} class="deletebtn"><DeleteIcon/></button>
                                             {movie.title}
                                         </p>
