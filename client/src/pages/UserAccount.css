@@ -155,35 +155,41 @@
 }
 
 .acct-container {
-    display: flex;
-    background-color: #3E2750;
-    border-radius: 5px;
-    margin: 15px;
+  display: flex;
+  background-color: #3E2750;
+  border-radius: 5px;
+  margin: 15px;
 }
 
 #profile-container{
-    flex-direction: column;
-    width: 33%;
-    padding: 15px;
-    justify-content: center;
-    align-items: center;
+  flex-direction: column;
+  width: 33%;
+  padding: 15px;
+  justify-content: center;
+  align-items: center;
+}
+#pText{
+  display: inline-block;
+  justify-content: center;
+  margin: auto;
 }
 .pName{
   margin-top: 10px;
   font-size: 30px;
 }
-.type-mood{
-  font-style: italic;
-  font-weight: lighter;
-}
+
 .pAge{
   margin-top: 5px;
   font-size: 25px;
 }
-.reel-mood{
+/* .reel-mood{
   margin-top: 15px;
   font-weight: 600;
   font-size: 25px;
+}
+.type-mood{
+  font-style: italic;
+  font-weight: lighter;
 }
 .input-mood{
   margin-top: 20px;
@@ -198,7 +204,7 @@
   font-style: italic;
   font-weight: lighter;
   font-size: 20px;
-}
+} */
 #profile {
     margin-top: 15px;
     background-color: #A0A0D1;
@@ -265,42 +271,6 @@
     margin-top: 50%;
 } */
 
-/* Dropdown Button */
-.dropbtn {
-    background-color: #3E2750;
-    border: none;
-    padding: 10px 32px;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 8px;
-    color: #5c5c9a;
-    transition-duration: 0.4s;
-    width: 250px;
-    font-size: 20px;
-    font-family: "PT Sans", sans-serif;
-    font-weight: 700;
-    font-style: normal;
-  }
-  
-.dropbtn:hover, .dropbtn:focus {
-    background-color: #2A133F;
-    color:rgb(228, 196, 54);
-  }
-  
-  /* The search field */
-  #myInput {
-    box-sizing: border-box;
-    background-position: 14px 12px;
-    background-repeat: no-repeat;
-    font-size: 16px;
-    padding: 14px 20px 12px 45px;
-    border: none;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  /* The search field when it gets focus/clicked on */
-  #myInput:focus {outline: 3px solid #ddd;}
-  
   /* The container <div> - needed to position the dropdown content */
   .dropdown {
     position: relative;
@@ -326,10 +296,7 @@
   }
   
   /* Change color of dropdown links on hover */
-  .dropdown-content a:hover {background-color: #f1f1f1}
-  
-  /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-  .show {display:block;}
+  .movie-item a:hover {background-color: #f1f1f1}
 
   ul{
     list-style-type: none;

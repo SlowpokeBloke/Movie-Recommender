@@ -331,7 +331,7 @@ app.post("/deleteFavActor", async (req, res) =>
         ];
         console.log("del vals: " + values);
         try{
-            await db.query(deleteFavActor, values);
+            await promiseDb.query(deleteFavActor, values);
             console.log("Deleted favorite Actor entry");
             return res.json({ status: "Success", message: "Actor Selection processed and deleted from UFA", values});
 
@@ -381,7 +381,7 @@ app.post("/deleteFavGenre", async (req, res) =>
         ];
         console.log("del vals: " + values);
         try{
-            await db.query(deleteFavGenre, values);
+            await promiseDb.query(deleteFavGenre, values);
             console.log("Deleted favorite Genre entry");
             return res.json({ status: "Success", message: "Genre Selection processed and deleted from UFG", values});
 
@@ -477,7 +477,7 @@ app.post("/deleteFromList", async (req, res) =>
         const values = [req.body.watch_list_id];
         console.log("del vals: " + values);
         try{
-            await db.query(deleteFromList, values);
+            await promiseDb.query(deleteFromList, values);
             console.log("Deleted watchlist entry");
             return res.json({ status: "Success", message: "Movie Selection processed and deleted from WL", values});
 

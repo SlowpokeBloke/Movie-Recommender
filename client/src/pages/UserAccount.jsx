@@ -6,6 +6,7 @@ import useDropDown from "../components/UseDropDown";
 import check from '../icon_pics/check.png';
 import popcorn from '../icon_pics/popcorn_icon.png';
 import movie_ticket from '../user-acct-pics/movie-ticket.png';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const UserAccount = () => {
     const {user_id} = useParams();
@@ -319,12 +320,14 @@ const UserAccount = () => {
                 <section id="profile">
                     {profile.map((person)=>(
                         <section className="profile-info" key={person.user_id}>
-                            <div className="pName">{person.full_name}</div>
-                            <div className="pAge">{person.age}</div>
-                            <div className="reel-mood">Reel Mood
-                            <div className="type-mood">
-                                <input className = "input-mood"placeholder="Type your status"></input>
-                            </div>
+                            <div id="pText">
+                                <div className="pName">{person.full_name}</div>
+                                <div className="pAge">{person.age}</div>
+                                {/* <div className="reel-mood">Reel Mood
+                                <div className="type-mood">
+                                    <input className = "input-mood"placeholder="Type your status"></input>
+                                </div>
+                                </div> */}
                             </div>
                         </section>
                     ))}
@@ -340,7 +343,7 @@ const UserAccount = () => {
                             {completedMovies.map((movie)=>(
                                 <div class="movie" key={movie.watch_list_id}>
                                     <p>
-                                        <button onClick={() => handleWLDelete(movie.watch_list_id)}>Del</button>
+                                        <button onClick={() => handleWLDelete(movie.watch_list_id)}><DeleteIcon/></button>
                                         {movie.title}
                                     </p>
                                 </div>
@@ -390,7 +393,7 @@ const UserAccount = () => {
                                     <div class="movie" key={movie.watch_list_id}>
                                         <p>
                                             <button onClick={()=> handleWLUpdate(movie.watch_list_id)}>Mark Complete</button>
-                                            <button onClick={() => handleWLDelete(movie.watch_list_id)}>Del</button>
+                                            <button onClick={() => handleWLDelete(movie.watch_list_id)}><DeleteIcon/></button>
                                             {movie.title}
                                         </p>
                                     </div>
@@ -405,7 +408,7 @@ const UserAccount = () => {
                             <ul className="genreList">
                                 {fav_genres.map((genre)=>(
                                     <li className="genre" key={genre.genre_id}>
-                                        <button onClick={() => handleFGDelete(genre.genre_id)}>Del</button>
+                                        <button onClick={() => handleFGDelete(genre.genre_id)}><DeleteIcon/></button>
                                         {genre.genre_name}
                                     </li>
                                 ))}
@@ -455,7 +458,7 @@ const UserAccount = () => {
                             <ul className="actorList">
                                 {fav_actors.map((actor)=>(
                                     <li className="actor" key={actor.actor_id}>
-                                        <button onClick={() => handleFADelete(actor.actor_id)}>Del</button>
+                                        <button onClick={() => handleFADelete(actor.actor_id)}><DeleteIcon/></button>
                                         {actor.actor_name}
                                     </li>
                                 ))}

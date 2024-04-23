@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, NavLink, useParams } from 'react-router-dom';
 import "./Navbar.css";
-
+import logo from "./imgs/logo.png";
 
 export const Navbar = () => {
     const { user_id} = useParams() || {};
@@ -11,7 +11,10 @@ export const Navbar = () => {
 
     return (
         <nav>
-            <Link to="/" className='title'>Movie Recommender</Link>
+            <Link to="/" className='title'>
+                <img src={logo} alt="Reel Match Logo" className="logo"/>
+                ReelMatch
+            </Link>
             <div className='menu' onClick={() => {
                 setMenuOpen(!menuOpen);
             }}>
